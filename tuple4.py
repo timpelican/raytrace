@@ -12,8 +12,8 @@ class tuple4:
         self.w = w
 
     def __eq__(self, other):
-        if (equals(self.x, other.x) and equals(self.y, other.y) and
-        equals(self.z, other.z) and equals(self.z, other.z)):
+        if (equals(self.x, other.x) and equals(self.y, other.y)
+                and equals(self.z, other.z) and equals(self.z, other.z)):
             return True
         else:
             return False
