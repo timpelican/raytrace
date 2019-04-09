@@ -1,10 +1,10 @@
 from aloe import step, world
-from tuple4 import tuple4
+from tuple4 import tuple4, point, vector
 from maths import equals
 
 
-@step(r'(\S+) is a tuple\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
-    r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
+@step(r'(\S+) <- tuple\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
 def _a_is_a_tuple(self, name, x, y, z, w):
     setattr(world, name, tuple4(float(x), float(y), float(z), float(w)))
 
@@ -14,40 +14,44 @@ def _a_is_a_tuple(self, name, x, y, z, w):
 
 
 @step(r'(\S+)\.([xyzw])\s*=\s*([-+]?\d*\.?\d+)')
-def _tuple_equals(self, name, member, value):
-    if equals(getattr(getattr(world, name), member), float(value)):
-        return True
-    else:
-        return False
+def _tuple_member_equals(self, name, member, value):
+    assert equals(getattr(getattr(world, name), member), float(value))
+
+
+@step(r'(\S+)\s*=\s*tuple\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
+def _tuple_equals(self, name, x, y, z, w):
+    test_tuple = tuple4(float(x), float(y), float(z), float(w))
+    assert getattr(world, name) == test_tuple
+
+
+@step(r'(\S+) <- point\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+)\)')
+def _p_is_a_point(self, name, x, y, z):
+    setattr(world, name, point(float(x), float(y), float(z)))
+
+
+@step(r'(\S+) <- vector\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+)\)')
+def _p_is_a_vector(self, name, x, y, z):
+    setattr(world, name, vector(float(x), float(y), float(z)))
 
 
 @step(r'(\S+) is a point')
 def _is_a_point(self, name):
-    if equals(getattr(world, name).w, 1.0):
-        return True
-    else:
-        return False
+    assert equals(getattr(world, name).w, 1.0)
 
 
 @step(r'(\S+) is not a point')
 def _is_not_a_point(self, name):
-    if equals(getattr(world, name).w, 1.0):
-        return False
-    else:
-        return True
+    assert equals(getattr(world, name).w, 0.0)
 
 
 @step(r'(\S+) is a vector')
 def _is_a_vector(self, name):
-    if equals(getattr(world, name).w, 0.0):
-        return True
-    else:
-        return False
+    assert equals(getattr(world, name).w, 0.0)
 
 
 @step(r'(\S+) is not a vector')
 def _is_not_a_vector(self, name):
-    if equals(getattr(world, name).w, 0.0):
-        return False
-    else:
-        return True
+    assert equals(getattr(world, name).w, 1.0)
