@@ -18,6 +18,14 @@ class tuple4:
         else:
             return False
 
+    def __add__(self, other):
+        return tuple4(self.x + other.x, self.y + other.y,
+                      self.z + other.z, self.w + other.w)
+
+    def __sub__(self, other):
+        return tuple4(self.x - other.x, self.y - other.y,
+                      self.z - other.z, self.w - other.w)
+
 
 def point(x, y, z):
     # TODO: validation

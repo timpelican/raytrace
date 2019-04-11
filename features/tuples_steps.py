@@ -18,11 +18,25 @@ def _tuple_member_equals(self, name, member, value):
     assert equals(getattr(getattr(world, name), member), float(value))
 
 
-@step(r'(\S+)\s*=\s*tuple\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+@step(r'([A-Za-z0-9]+)\s*=\s*tuple\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
       r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
 def _tuple_equals(self, name, x, y, z, w):
     test_tuple = tuple4(float(x), float(y), float(z), float(w))
     assert getattr(world, name) == test_tuple
+
+
+@step(r'([A-Za-z0-9]+)\s*\+\s*([A-Za-z0-9]+)\s*=\s*tuple\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
+def _tuple_addition(self, name1, name2, x, y, z, w):
+    test_tuple = tuple4(float(x), float(y), float(z), float(w))
+    assert getattr(world, name1) + getattr(world, name2) == test_tuple
+
+
+@step(r'([A-Za-z0-9]+)\s*\-\s*([A-Za-z0-9]+)\s*=\s*vector\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _point_subtraction(self, name1, name2, x, y, z):
+    test_tuple = vector(float(x), float(y), float(z))
+    assert getattr(world, name1) - getattr(world, name2) == test_tuple
 
 
 @step(r'(\S+) <- point\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'

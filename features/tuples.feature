@@ -29,4 +29,13 @@ Scenario: point() creates tuples with w=1
 Scenario: vector() creates tuples with w=0
   Given v <- vector(4, -4, 3)
   Then v = tuple(4, -4, 3, 0)
-  
+
+Scenario: Adding two tuples
+  Given a1 <- tuple(3, -2, 5, 1)
+  And a2 <- tuple(-2, 3, 1, 0)
+  Then a1 + a2 = tuple(1, 1, 6, 1)
+
+Scenario: Subtracting two points
+  Given p1 <- point(3, 2, 1)
+  And p2 <- point(5, 6, 7)
+  Then p1 - p2 = vector(-2, -4, -6)
