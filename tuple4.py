@@ -26,6 +26,15 @@ class tuple4:
         return tuple4(self.x - other.x, self.y - other.y,
                       self.z - other.z, self.w - other.w)
 
+    def __neg__(self):
+        return tuple4(-self.x, -self.y, -self.z, -self.w)
+
+    def __mul__(self, m):
+        return tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
+
+    def __div__(self, d):
+        return tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
+
 
 def point(x, y, z):
     # TODO: validation
