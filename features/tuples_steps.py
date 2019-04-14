@@ -1,6 +1,7 @@
 from aloe import step, world
 from tuple4 import tuple4, point, vector
 from maths import equals
+from math import sqrt
 
 
 @step(r'(\S+) <- tuple\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
@@ -93,3 +94,13 @@ def _is_a_vector(self, name):
 @step(r'(\S+) is not a vector')
 def _is_not_a_vector(self, name):
     assert equals(getattr(world, name).w, 1.0)
+
+
+@step(r'magnitude\(([A-Za-z0-9]+)\)\s*=\s*([-+]?\d*\.?\d+)')
+def _magnitude_vector(self, name, magnitude):
+    assert equals(getattr(world, name).magnitude(), float(magnitude))
+
+
+@step(r'magnitude\(([A-Za-z0-9]+)\)\s*=\s*sqrt\(([-+]?\d*\.?\d+)\)')
+def _magnitude_vector_sqrt(self, name, magnitude):
+    assert equals(getattr(world, name).magnitude(), sqrt(float(magnitude)))

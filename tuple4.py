@@ -1,6 +1,7 @@
 # 4-item tuples as a maths building block for raytrace
 
-from maths import equals
+from maths import equals    # American naming means we can call ours 'maths'
+from math import sqrt
 
 
 class tuple4:
@@ -34,6 +35,9 @@ class tuple4:
 
     def __div__(self, d):
         return tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
+
+    def magnitude(self):
+        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2 + self.w ** 2)
 
 
 def point(x, y, z):
