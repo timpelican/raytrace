@@ -104,3 +104,15 @@ def _magnitude_vector(self, name, magnitude):
 @step(r'magnitude\(([A-Za-z0-9]+)\)\s*=\s*sqrt\(([-+]?\d*\.?\d+)\)')
 def _magnitude_vector_sqrt(self, name, magnitude):
     assert equals(getattr(world, name).magnitude(), sqrt(float(magnitude)))
+
+
+@step(r'normalize\(([A-Za-z0-9]+)\)\s*=\s*vector\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _normalize_vector_equals(self, name, x, y, z):
+    test_vector = vector(float(x), float(y), float(z))
+    assert getattr(world, name).normalize() == test_vector
+
+
+@step(r'([A-Za-z0-9]+)\s*<-\s*normalize\(([A-Za-z0-9]+)\)')
+def _normalize_vector(self, name, v):
+    setattr(world, name, getattr(world, v).normalize())

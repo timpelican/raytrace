@@ -39,6 +39,11 @@ class tuple4:
     def magnitude(self):
         return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2 + self.w ** 2)
 
+    def normalize(self):
+        mag = self.magnitude()
+        return tuple4(self.x / mag, self.y / mag, self.z / mag,
+                      self.w / mag)
+
 
 def point(x, y, z):
     # TODO: validation
