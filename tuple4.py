@@ -36,6 +36,11 @@ class tuple4:
     def __div__(self, d):
         return tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
 
+    def __str__(self):
+        # No f-strings pre 3.6
+        return '{x}, {y}, {z}. {w}'.format(x=self.x, y=self.y, z=self.z,
+                                           w=self.w)
+
     def magnitude(self):
         return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2 + self.w ** 2)
 
@@ -43,6 +48,17 @@ class tuple4:
         mag = self.magnitude()
         return tuple4(self.x / mag, self.y / mag, self.z / mag,
                       self.w / mag)
+
+    def dot(self, other):
+        return self.x * other.x + \
+               self.y * other.y + \
+               self.z * other.z + \
+               self.w * other.w
+
+    def cross(self, other):
+        return vector(self.y * other.z - self.z * other.y,
+                      self.z * other.x - self.x * other.z,
+                      self.x * other.y - self.y * other.x)
 
 
 def point(x, y, z):

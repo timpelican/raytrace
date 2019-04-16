@@ -116,3 +116,16 @@ def _normalize_vector_equals(self, name, x, y, z):
 @step(r'([A-Za-z0-9]+)\s*<-\s*normalize\(([A-Za-z0-9]+)\)')
 def _normalize_vector(self, name, v):
     setattr(world, name, getattr(world, v).normalize())
+
+
+@step(r'dot\(([A-Za-z0-9]+)\s*,\s*([A-Za-z0-9]+)\)\s*=\s*([-+]?\d*\.?\d+)')
+def _dot_product(self, name1, name2, dotproduct):
+    dp = float(dotproduct)
+    assert equals(getattr(world, name1).dot(getattr(world, name2)), dp)
+
+
+@step(r'cross\(([A-Za-z0-9]+)\s*,\s*([A-Za-z0-9]+)\)\s*=\s*'
+      r'vector\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
+def _cross_product(self, name1, name2, x, y, z):
+    test_vector = vector(float(x), float(y), float(z))
+    assert getattr(world, name1).cross(getattr(world, name2)) == test_vector
