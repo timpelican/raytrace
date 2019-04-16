@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+from tuple4 import vector, point
+
+
+def tick(env, proj):
+    position = proj.position + proj.velocity
+    velocity = proj.velocity + env.gravity + env.wind
+    return projectile(position, velocity)
+
+
+class projectile:
+    def __init__(self, position, velocity):
+        self.position = position
+        self.velocity = velocity
+
+
+class environment:
+    def __init__(self, gravity, wind):
+        self.gravity = gravity
+        self.wind = wind
+
+
+p = projectile(point(0, 1, 0), vector(1, 1, 0).normalize())
+e = environment(vector(0, -0.1, 0), vector(-0.01, 0, 0))
+
+print("x={x}, y={y}".format(x=p.position.x, y=p.position.y))
+while (p.position.y >= 0):
+    p = tick(e, p)
+    print("x={x}, y={y}".format(x=p.position.x, y=p.position.y))
