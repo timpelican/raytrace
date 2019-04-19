@@ -4,7 +4,7 @@ from maths import equals    # American naming means we can call ours 'maths'
 from math import sqrt
 
 
-class Tuple4:
+class Tuple4(object):
     def __init__(self, x, y, z, w):
         # TODO: Any kind of validation
         self.x = x
@@ -60,6 +60,31 @@ class Tuple4:
                       self.z * other.x - self.x * other.z,
                       self.x * other.y - self.y * other.x)
 
+    # Alias hacks for colour
+
+
+    def get_red(self):
+        return self.x
+
+    def set_red(self, r):
+        self.x = float(r)
+
+    def get_green(self):
+        return self.y
+
+    def set_green(self, g):
+        self.y = float(g)
+
+    def get_blue(self):
+        return self.z
+
+    def set_blue(self, b):
+        self.z = float(b)
+
+    red = property(get_red, set_red)
+    green = property(get_green, set_green)
+    blue = property(get_blue, set_blue)
+
 
 def Point(x, y, z):
     # TODO: validation
@@ -69,3 +94,11 @@ def Point(x, y, z):
 def Vector(x, y, z):
     # TODO: validation
     return Tuple4(x, y, z, 0)
+
+# TODO: This should really be a subclass, the behaviour is different
+# TODO: and so are the attributes.
+# TODO: Hack as aliases for the moment.
+
+
+def Colour(r, g, b):
+    return Tuple4(r, g, b, 0)

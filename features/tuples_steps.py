@@ -1,5 +1,5 @@
 from aloe import step, world
-from Tuple4 import Tuple4, Point, Vector
+from Tuple4 import Tuple4, Point, Vector, Colour
 from maths import equals
 from math import sqrt
 
@@ -72,7 +72,7 @@ def _p_is_a_point(self, name, x, y, z):
 
 @step(r'(\S+) <- vector\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
       r'\s*([-+]?\d*\.?\d+)\)')
-def _p_is_a_vector(self, name, x, y, z):
+def _v_is_a_vector(self, name, x, y, z):
     setattr(world, name, Vector(float(x), float(y), float(z)))
 
 
@@ -129,3 +129,14 @@ def _dot_product(self, name1, name2, dotproduct):
 def _cross_product(self, name1, name2, x, y, z):
     test_vector = Vector(float(x), float(y), float(z))
     assert getattr(world, name1).cross(getattr(world, name2)) == test_vector
+
+
+@step(r'(\S+) <- colour\s*\(([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+)\)')
+def _c_is_a_vector(self, name, r, g, b):
+    setattr(world, name, Colour(float(r), float(g), float(b)))
+
+
+@step(r'(\S+)\.(red|green|blue)\s*=\s*([-+]?\d*\.?\d+)')
+def _colour_member_equals(self, name, member, value):
+    assert equals(getattr(getattr(world, name), member), float(value))
