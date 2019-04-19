@@ -4,7 +4,7 @@ from maths import equals    # American naming means we can call ours 'maths'
 from math import sqrt
 
 
-class tuple4:
+class Tuple4:
     def __init__(self, x, y, z, w):
         # TODO: Any kind of validation
         self.x = x
@@ -20,21 +20,21 @@ class tuple4:
             return False
 
     def __add__(self, other):
-        return tuple4(self.x + other.x, self.y + other.y,
+        return Tuple4(self.x + other.x, self.y + other.y,
                       self.z + other.z, self.w + other.w)
 
     def __sub__(self, other):
-        return tuple4(self.x - other.x, self.y - other.y,
+        return Tuple4(self.x - other.x, self.y - other.y,
                       self.z - other.z, self.w - other.w)
 
     def __neg__(self):
-        return tuple4(-self.x, -self.y, -self.z, -self.w)
+        return Tuple4(-self.x, -self.y, -self.z, -self.w)
 
     def __mul__(self, m):
-        return tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
+        return Tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
 
     def __div__(self, d):
-        return tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
+        return Tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
 
     def __str__(self):
         # No f-strings pre 3.6
@@ -46,7 +46,7 @@ class tuple4:
 
     def normalize(self):
         mag = self.magnitude()
-        return tuple4(self.x / mag, self.y / mag, self.z / mag,
+        return Tuple4(self.x / mag, self.y / mag, self.z / mag,
                       self.w / mag)
 
     def dot(self, other):
@@ -56,16 +56,16 @@ class tuple4:
                self.w * other.w
 
     def cross(self, other):
-        return vector(self.y * other.z - self.z * other.y,
+        return Vector(self.y * other.z - self.z * other.y,
                       self.z * other.x - self.x * other.z,
                       self.x * other.y - self.y * other.x)
 
 
-def point(x, y, z):
+def Point(x, y, z):
     # TODO: validation
-    return tuple4(x, y, z, 1.0)
+    return Tuple4(x, y, z, 1.0)
 
 
-def vector(x, y, z):
+def Vector(x, y, z):
     # TODO: validation
-    return tuple4(x, y, z, 0)
+    return Tuple4(x, y, z, 0)
