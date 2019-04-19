@@ -140,3 +140,31 @@ def _c_is_a_vector(self, name, r, g, b):
 @step(r'(\S+)\.(red|green|blue)\s*=\s*([-+]?\d*\.?\d+)')
 def _colour_member_equals(self, name, member, value):
     assert equals(getattr(getattr(world, name), member), float(value))
+
+
+@step(r'([A-Za-z0-9]+)\s*\+\s*([A-Za-z0-9]+)\s*=\s*colour\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _colour_addition(self, name1, name2, r, g, b):
+    test_colour = Colour(float(r), float(g), float(b))
+    assert getattr(world, name1) + getattr(world, name2) == test_colour
+
+
+@step(r'([A-Za-z0-9]+)\s*\-\s*([A-Za-z0-9]+)\s*=\s*colour\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _colour_subtraction(self, name1, name2, r, g, b):
+    test_colour = Colour(float(r), float(g), float(b))
+    assert getattr(world, name1) - getattr(world, name2) == test_colour
+
+
+@step(r'([A-Za-z0-9]+)\s*\*\s*([-+]?\d*\.?\d+)\s*=\s*colour\(([-+]?\d*\.?\d+),'
+      r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _colour_scalar_multiplication(self, name, multiplier, r, g, b):
+    test_colour = Colour(float(r), float(g), float(b))
+    assert getattr(world, name) * float(multiplier) == test_colour
+
+
+@step(r'([A-Za-z0-9]+)\s*\*\s*([A-Za-z][A-Za-z0-9]*)\s*=\s*colour\('
+      r'([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)')
+def _colour_multiplication(self, name1, name2, r, g, b):
+    test_colour = Colour(float(r), float(g), float(b))
+    assert getattr(world, name1) * getattr(world, name2) == test_colour

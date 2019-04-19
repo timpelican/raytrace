@@ -31,7 +31,15 @@ class Tuple4(object):
         return Tuple4(-self.x, -self.y, -self.z, -self.w)
 
     def __mul__(self, m):
-        return Tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
+        if isinstance(m, float):
+            return Tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
+        # Only valid for Colours, which is why we should have a subclass
+        elif isinstance(m, Tuple4):
+            return Colour(self.red * m.red,
+                          self.green * m.green,
+                          self.blue * m.blue)
+        else:  # Throw an clearer exception?
+            raise
 
     def __div__(self, d):
         return Tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
@@ -61,7 +69,6 @@ class Tuple4(object):
                       self.x * other.y - self.y * other.x)
 
     # Alias hacks for colour
-
 
     def get_red(self):
         return self.x

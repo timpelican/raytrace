@@ -121,3 +121,22 @@ Scenario: Colours are (red, green, blue) tuples
   Then c.red = -0.5
   And c.green = 0.4
   And c.blue = 1.7
+
+Scenario: Adding colours
+  Given c1 <- colour(0.9, 0.6, 0.75)
+  And c2 <- colour(0.7, 0.1, 0.25)
+  Then c1 + c2 = colour(1.6, 0.7, 1.0)
+
+Scenario: Subtracting colours
+  Given c1 <- colour(0.9, 0.6, 0.75)
+  And c2 <- colour(0.7, 0.1, 0.25)
+  Then c1 - c2 = colour(0.2, 0.5, 0.5)
+
+Scenario: Multiplying a colour by a scalar
+  Given c <- colour(0.2, 0.3, 0.4)
+  Then c * 2 = colour(0.4, 0.6, 0.8)
+
+Scenario: Multiplying colours
+  Given c1 <- colour(1, 0.2, 0.4)
+  And c2 <- colour(0.9, 1, 0.1)
+  Then c1 * c2 = colour(0.9, 0.2, 0.04)
