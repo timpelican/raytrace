@@ -33,16 +33,39 @@ class Canvas(object):
         ppm_string += "{w} {h}\n".format(w=self.width, h=self.height)
         ppm_string += "255\n"
         for y in range(0, self.height):
+            line = ""
             first = 1
             for x in range(0, self.width):
                 p = self.pixels[y][x]
+                red = max(0, min(255, int(round(p.red*255))))
+                if len(line + " " + str(red)) > 70:
+                    ppm_string += line + "\n"
+                    line = ""
+                    first = 1
                 if first == 1:
                     first = 0
                 else:
-                    ppm_string += " "
-                red = max(0, min(255, int(round(p.red*255))))
+                    line += " "
+                line += str(red)
                 green = max(0, min(255, int(round(p.green*255))))
+                if len(line + " " + str(green)) > 70:
+                    ppm_string += line + "\n"
+                    line = ""
+                    first = 1
+                if first == 1:
+                    first = 0
+                else:
+                    line += " "
+                line += str(green)
                 blue = max(0, min(255, int(round(p.blue*255))))
-                ppm_string += "{r} {g} {b}".format(r=red, g=green, b=blue)
-            ppm_string += "\n"
+                if len(line + " " + str(blue)) > 70:
+                    ppm_string += line + "\n"
+                    line = ""
+                    first = 1
+                if first == 1:
+                    first = 0
+                else:
+                    line += " "
+                line += str(blue)
+            ppm_string += line + "\n"
         return ppm_string
