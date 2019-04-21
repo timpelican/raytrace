@@ -34,3 +34,17 @@ def _pixel_at_name(self, name, x, y, colour):
     test_canvas = getattr(world, name)
     test_colour = getattr(world, colour)
     assert test_canvas.pixel_at(int(x), int(y)) == test_colour
+
+
+@step(r'(\S+) <- canvas_to_ppm\((\S+)\)')
+def _canvas_to_ppm(self, name, canvas):
+    setattr(world, name, getattr(world, canvas).to_ppm())
+
+
+@step(r'lines (\d+)-(\d+) of (\S+) are')
+def _compare_mls_range(self, first, last, name):
+    test_string = self.multiline
+    test_range = getattr(world, name).splitlines()
+    test_mls = "\n".join(test_range[int(first)-1:int(last)])
+    print "Expected\n", test_string, "\n\nGot\n", test_mls
+    assert test_mls == test_string
