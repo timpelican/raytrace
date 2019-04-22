@@ -23,6 +23,12 @@ class Canvas(object):
         return Colour(p.red, p.green, p.blue)
 
     def write_pixel(self, x, y, c):
+        # Force pixels into range
+        # Is this the right thing to do, or ignore a pixel out of range?
+        # Or even continue to throw an exception, and force the caller to
+        # check range?
+        x = max(0, min(self.width - 1, x))
+        y = max(0, min(self.height - 1, y))
         p = self.pixels[y][x]
         p.red = c.red
         p.green = c.green
@@ -69,3 +75,7 @@ class Canvas(object):
                 line += str(blue)
             ppm_string += line + "\n"
         return ppm_string
+
+    def to_ppm_file(self, filename):
+        with open(filename, 'w') as f:
+            f.write(self.to_ppm())

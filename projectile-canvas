@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+from Tuple4 import Vector, Point, Colour
+from Canvas import Canvas
+
+
+def tick(env, proj):
+    position = proj.position + proj.velocity
+    velocity = proj.velocity + env.gravity + env.wind
+    return projectile(position, velocity)
+
+
+class projectile:
+    def __init__(self, position, velocity):
+        self.position = position
+        self.velocity = velocity
+
+
+class environment:
+    def __init__(self, gravity, wind):
+        self.gravity = gravity
+        self.wind = wind
+
+
+p = projectile(Point(0, 1, 0), Vector(1, 1.8, 0).normalize() * 11.25)
+e = environment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
+
+c = Canvas(900, 500)
+white = Colour(0.8, 0.8, 0.8)
+
+print("x={x}, y={y}".format(x=p.position.x, y=p.position.y))
+while (p.position.y >= 0):
+    p = tick(e, p)
+    print("x={x}, y={y}".format(x=p.position.x, y=p.position.y))
+    c.write_pixel(int(round(p.position.x)), 500-int(round(p.position.y)),
+                  white)
+
+c.to_ppm_file('projectile.ppm')
