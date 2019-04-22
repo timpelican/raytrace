@@ -54,3 +54,8 @@ Scenario: Splitting long lines in PPM files
     255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
     153 255 204 153 255 204 153 255 204 153 255 204 153
     """
+
+Scenario: PPM files are terminated by a newline character
+  Given c <- canvas(5, 3)
+  When ppm <- canvas_to_ppm(c)
+  Then ppm ends with a newline character

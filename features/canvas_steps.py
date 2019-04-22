@@ -46,8 +46,8 @@ def _compare_mls_range(self, first, last, name):
     test_string = self.multiline
     test_range = getattr(world, name).splitlines()
     test_mls = "\n".join(test_range[int(first)-1:int(last)])
-    print "Expected\n", test_string, "\n\nGot\n", test_mls
-    assert test_mls == test_string
+    assert test_mls == test_string, \
+        "Expected\n" + test_string + "\n\nGot\n" + test_mls
 
 
 @step(r'every pixel of (\S+) is set to colour\(([-+]?\d*\.?\d+),\s*'
@@ -58,3 +58,8 @@ def _fill_canvas_colour(self, name, r, g, b):
     for x in range(0, canvas.width):
         for y in range(0, canvas.height):
             canvas.write_pixel(x, y, colour)
+
+
+@step(r'(\S+) ends with a newline character')
+def _mls_ends_in_newline(self, name):
+    assert getattr(world, name)[-1:] == "\n"
