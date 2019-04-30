@@ -1,5 +1,6 @@
 # Matrix operations
 from maths import equals
+from Tuple4 import Tuple4
 
 
 class Matrix(object):
@@ -29,18 +30,26 @@ class Matrix(object):
         return not(self == other)
 
     def __mul__(self, other):
-        if self.cols != other.rows:
-            raise MatrixError('A.columns must equal B.rows to '
-                              'multiply matrices.')
-        data = []
-        for r in range(0, self.rows):
-            data.append([])
-            for c in range(0, other.cols):
-                total = 0
-                for m in range(0, self.cols):
-                    total += (self[r][m] * other[m][c])
-                data[r].append(total)
-        return Matrix(data)
+        if isinstance(other, Matrix):
+            if self.cols != other.rows:
+                raise MatrixError('A.columns must equal B.rows to '
+                                  'multiply matrices.')
+            data = []
+            for r in range(0, self.rows):
+                data.append([])
+                for c in range(0, other.cols):
+                    total = 0
+                    for m in range(0, self.cols):
+                        total += (self[r][m] * other[m][c])
+                    data[r].append(total)
+            return Matrix(data)
+        elif isinstance(other, Tuple4):
+            m1 = Matrix([[other.x], [other.y], [other.z], [other.w]])
+            m2 = self * m1
+            return Tuple4(m2[0][0], m2[1][0], m2[2][0], m2[3][0])
+        else:
+            raise MatrixError('Cannot mutiply a matrix by a '
+                              + type(other).__name__)
 
 
 class MatrixError(Exception):

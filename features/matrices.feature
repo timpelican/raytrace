@@ -78,3 +78,13 @@ Scenario: Multiplying two matrices
     | 44    | 54    | 114   | 108   |
     | 40    | 58    | 110   | 102   |
     | 16    | 26    | 46    | 42    |
+
+
+Scenario: A matrix multipled by a tuple
+  Given the following 4x4 matrix A:
+    | 1     | 2     | 3     | 4     |
+    | 2     | 4     | 4     | 2     |
+    | 8     | 6     | 4     | 1     |
+    | 0     | 0     | 0     | 1     |
+  And b <- tuple(1, 2, 3, 1)
+  Then A * b = tuple(18, 24, 33, 1)
