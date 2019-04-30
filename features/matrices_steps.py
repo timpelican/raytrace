@@ -21,3 +21,10 @@ def _matrix_equal(self, name1, name2):
 @step(r'matrix ([A-Za-z0-9]+)\s*!=\s*matrix ([A-Za-z0-9]+)')
 def _matrix_not_equal(self, name1, name2):
     assert getattr(world, name1) != getattr(world, name2)
+
+
+@step(r'([A-Za-z0-9]+)\s*\*\s*([A-Za-z0-9]+) is the following '
+      r'(\d+)x(\d+) matrix:')
+def _matrix_multiplication(self, name1, name2, rows, cols):
+    test_matrix = Matrix(self.table)
+    assert getattr(world, name1) * getattr(world, name2) == test_matrix

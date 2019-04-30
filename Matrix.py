@@ -27,3 +27,22 @@ class Matrix(object):
 
     def __ne__(self, other):
         return not(self == other)
+
+    def __mul__(self, other):
+        if self.cols != other.rows:
+            raise MatrixError('A.columns must equal B.rows to '
+                              'multiply matrices.')
+        data = []
+        for r in range(0, self.rows):
+            data.append([])
+            for c in range(0, other.cols):
+                total = 0
+                for m in range(0, self.cols):
+                    total += (self[r][m] * other[m][c])
+                data[r].append(total)
+        return Matrix(data)
+
+
+class MatrixError(Exception):
+    def __init__(self, message):
+        self.message = message
