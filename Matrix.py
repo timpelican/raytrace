@@ -51,7 +51,43 @@ class Matrix(object):
             raise MatrixError('Cannot mutiply a matrix by a '
                               + type(other).__name__)
 
+    def __str__(self):
+        m = '[ '
+        first_row = True
+        for r in range(0, self.rows):
+            if first_row:
+                first_row = False
+            else:
+                m += ',\n  '
+            m += '[ '
+            first_col = True
+            for c in range(0, self.cols):
+                if first_col:
+                    first_col = False
+                else:
+                    m += ', '
+                m += str(self[r][c])
+            m += ']'
+        m += ' ]\n'
+        return m
+
 
 class MatrixError(Exception):
     def __init__(self, message):
         self.message = message
+
+
+def IdentityMatrix(size):
+    m = ZeroMatrix(size, size)
+    for r in range(0, size):
+        m[r][r] = 1
+    return m
+
+
+def ZeroMatrix(rows, cols):
+    data = []
+    for r in range(0, rows):
+        data.append([])
+        for c in range(0, cols):
+            data[r].append(0)
+    return Matrix(data)
