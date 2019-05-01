@@ -42,22 +42,22 @@ def _matrix_mutiplied_by_tuple(self, name1, name2, x, y, z, w):
 @step(r'([A-Za-z0-9]+)\s*\*\s*identity_matrix\s*=\s*([A-Za-z0-9]+)')
 def _matrix_times_identity(self, name1, name2):
     id = IdentityMatrix(getattr(world, name1).rows)
-    print "identity_matrix is:"
-    print str(id)
-    print "\nExpected:"
-    print str(getattr(world, name2))
-    print "\nGot:"
-    print str(getattr(world, name2) * id)
+    print("identity_matrix is:")
+    print(str(id))
+    print("\nExpected:")
+    print(str(getattr(world, name2)))
+    print("\nGot:")
+    print(str(getattr(world, name2) * id))
     assert getattr(world, name1) * id == getattr(world, name2)
 
 
 @step(r'identity_matrix\s*\*\s*([A-Za-z0-9]+)\s*=\s*([A-Za-z0-9]+)')
 def _identity_times_tuple(self, name1, name2):
     id = IdentityMatrix(4)
-    print "identity_matrix is:"
-    print str(id)
-    print "\nExpected:"
-    print str(getattr(world, name2))
-    print "\nGot:"
-    print str(id * getattr(world, name2))
+    print("identity_matrix is:")
+    print(str(id))
+    print("\nExpected:")
+    print(str(getattr(world, name2)))
+    print("\nGot:")
+    print(str(id * getattr(world, name2)))
     assert id * getattr(world, name1) == getattr(world, name2)
