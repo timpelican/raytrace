@@ -71,6 +71,13 @@ class Matrix(object):
         m += ' ]\n'
         return m
 
+    def transpose(self):
+        m = ZeroMatrix(self.cols, self.rows)
+        for r in range(0, self.rows):
+            for c in range(0, self.cols):
+                m[c][r] = self[r][c]
+        return m
+
 
 class MatrixError(Exception):
     def __init__(self, message):

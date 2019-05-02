@@ -62,3 +62,29 @@ def _identity_times_tuple(self, name1, name2):
     print("\nGot:")
     print(str(id * getattr(world, name2)))
     assert id * getattr(world, name1) == getattr(world, name2)
+
+
+@step(r'transpose\(([A-Za-z][A-Za-z0-9]*)\) is the following (\d+)x(\d+)'
+      r' matrix:')
+def _transpose_matrix(self, name, rows, cols):
+    test_matrix = Matrix(self.table)
+    print("Expected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name).transpose())
+    assert getattr(world, name).transpose() == test_matrix
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- transpose\(identity_matrix\)')
+def _create_transpose_identity_matrix(self, name):
+    setattr(world, name, IdentityMatrix(4))
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) is the identity_matrix')
+def _check_identity_matrix(self, name):
+    id = IdentityMatrix(getattr(world, name).rows)
+    print("Expected:")
+    print(id)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == id
