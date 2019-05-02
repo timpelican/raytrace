@@ -24,11 +24,11 @@ Scenario: A tuple with w=0 is a vector
 
 Scenario: point() creates tuples with w=1
   Given p <- point(4, -4, 3)
-  Then p = tuple(4, -4, 3, 1)
+  Then tuple p = tuple(4, -4, 3, 1)
 
 Scenario: vector() creates tuples with w=0
   Given v <- vector(4, -4, 3)
-  Then v = tuple(4, -4, 3, 0)
+  Then tuple v = tuple(4, -4, 3, 0)
 
 Scenario: Adding two tuples
   Given a1 <- tuple(3, -2, 5, 1)
@@ -57,7 +57,7 @@ Scenario: Subtracting a vector from the zero vector
 
 Scenario: Negating a tuple
   Given a <- tuple(1, -2, 3, -4)
-  Then -a = tuple(-1, 2, -3, 4)
+  Then tuple -a = tuple(-1, 2, -3, 4)
 
 Scenario: Multiplying a tuple by a scalar
   Given a <- tuple(1, -2, 3, -4)

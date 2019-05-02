@@ -41,6 +41,9 @@ class Tuple4(object):
         else:  # Throw an clearer exception?
             raise
 
+    def __div__(self, d):
+        return self.__truediv__(d)
+
     def __truediv__(self, d):
         return Tuple4(self.x / d, self.y / d, self.z / d, self.w / d)
 

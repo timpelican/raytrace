@@ -19,6 +19,16 @@ def _tuple_member_equals(self, name, member, value):
     assert equals(getattr(getattr(world, name), member), float(value))
 
 
+@step(r'tuple (-?)([A-Za-z][A-Za-z0-9]*)\s*=\s*tuple\(([-+]?\d*\.?\d+),\s*'
+      r'([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
+def _tuple_equals(self, negate, name, x, y, z, w):
+    test_tuple = Tuple4(float(x), float(y), float(z), float(w))
+    if negate == "-":
+        assert -getattr(world, name) == test_tuple
+    else:
+        assert getattr(world, name) == test_tuple
+
+
 @step(r'([A-Za-z0-9]+)\s*\+\s*([A-Za-z0-9]+)\s*=\s*tuple\(([-+]?\d*\.?\d+),'
       r'\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
 def _tuple_addition(self, name1, name2, x, y, z, w):
@@ -38,16 +48,6 @@ def _tuple_multiplication(self, name, multiplier, x, y, z, w):
 def _tuple_division(self, name, divisor, x, y, z, w):
     test_tuple = Tuple4(float(x), float(y), float(z), float(w))
     assert getattr(world, name) / float(divisor) == test_tuple
-
-
-@step(r'(-?)([A-Za-z][A-Za-z0-9]*)\s*=\s*tuple\(([-+]?\d*\.?\d+),\s*'
-      r'([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+),\s*([-+]?\d*\.?\d+)\)')
-def _tuple_equals(self, negate, name, x, y, z, w):
-    test_tuple = Tuple4(float(x), float(y), float(z), float(w))
-    if negate == "-":
-        assert -getattr(world, name) == test_tuple
-    else:
-        assert getattr(world, name) == test_tuple
 
 
 @step(r'([A-Za-z0-9]+)\s*\-\s*([A-Za-z0-9]+)\s*=\s*vector\(([-+]?\d*\.?\d+),'
