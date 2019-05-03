@@ -88,3 +88,12 @@ def _check_identity_matrix(self, name):
     print("\nGot:")
     print(getattr(world, name))
     assert getattr(world, name) == id
+
+
+@step(r'determinant\(([A-Za-z][A-Za-z0-9]*)\)\s*=\s*([-+]?\d*\.?\d+)')
+def _check_determinant(self, name, determinant):
+    print("Expected:")
+    print(float(determinant))
+    print("\nGot:")
+    print(getattr(world, name).determinant())
+    assert equals(getattr(world, name).determinant(), float(determinant))

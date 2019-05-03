@@ -78,6 +78,17 @@ class Matrix(object):
                 m[c][r] = self[r][c]
         return m
 
+    def determinant(self):
+        if self.rows != self.cols:
+            raise MatrixError('Can only calculate determinant for square '
+                              'matrix')
+        elif self.rows == 2:
+            return (self[0][0] * self[1][1]) - (self[0][1] * self[1][0])
+        else:
+            raise MatrixError("Can't calculate determinant for a "
+                              + str(self.rows) + "x" + str(self.cols)
+                              + " matrix")
+
 
 class MatrixError(Exception):
     def __init__(self, message):
