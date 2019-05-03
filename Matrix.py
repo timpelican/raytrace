@@ -89,6 +89,20 @@ class Matrix(object):
                               + str(self.rows) + "x" + str(self.cols)
                               + " matrix")
 
+    def submatrix(self, subrow, subcol):
+        m = ZeroMatrix(self.rows - 1, self.cols - 1)
+        for r in range(0, subrow):
+            for c in range(0, subcol):
+                m[r][c] = self[r][c]
+            for c in range(subcol + 1, self.cols):
+                m[r][c - 1] = self[r][c]
+        for r in range(subrow + 1, self.rows):
+            for c in range(0, subcol):
+                m[r-1][c] = self[r][c]
+            for c in range(subcol + 1, self.cols):
+                m[r-1][c - 1] = self[r][c]
+        return m
+
 
 class MatrixError(Exception):
     def __init__(self, message):

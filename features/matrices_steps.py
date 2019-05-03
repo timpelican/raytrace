@@ -97,3 +97,15 @@ def _check_determinant(self, name, determinant):
     print("\nGot:")
     print(getattr(world, name).determinant())
     assert equals(getattr(world, name).determinant(), float(determinant))
+
+
+@step(r'submatrix\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\) is the '
+      r'following (\d+)x(\d+) matrix:')
+def _check_submatrix(self, name, subrow, subcol, rows, cols):
+    test_matrix = Matrix(self.table)
+    print("Expected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name).submatrix(int(subrow), int(subcol)))
+    assert getattr(world, name).submatrix(int(subrow), int(subcol)) ==\
+        test_matrix
