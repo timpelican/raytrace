@@ -109,3 +109,32 @@ def _check_submatrix(self, name, subrow, subcol, rows, cols):
     print(getattr(world, name).submatrix(int(subrow), int(subcol)))
     assert getattr(world, name).submatrix(int(subrow), int(subcol)) ==\
         test_matrix
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- submatrix\(([A-Za-z][A-Za-z0-9]*)\s*,\s*'
+      r'(\d+)\s*,\s*(\d+)\)')
+def _get_submatrix(self, name1, name2, subrow, subcol):
+    setattr(world, name1,
+            getattr(world, name2).submatrix(int(subrow), int(subcol)))
+
+
+@step(r'minor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
+      r'([-+]?\d*\.?\d+)')
+def _check_minor(self, name, row, col, minor):
+    print("Expected:")
+    print(float(minor))
+    print("\nGot:")
+    print(getattr(world, name).minor(int(row), int(col)))
+    assert equals(getattr(world, name).minor(int(row), int(col)),
+                  float(minor))
+
+
+@step(r'cofactor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
+      r'([-+]?\d*\.?\d+)')
+def _check_cofactor(self, name, row, col, cofactor):
+    print("Expected:")
+    print(float(cofactor))
+    print("\nGot:")
+    print(getattr(world, name).cofactor(int(row), int(col)))
+    assert equals(getattr(world, name).cofactor(int(row), int(col)),
+                  float(cofactor))
