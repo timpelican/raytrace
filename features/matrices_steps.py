@@ -140,7 +140,7 @@ def _check_minor(self, name, row, col, minor):
 @step(r'cofactor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
       r'([-+]?\d*\.?\d+)')
 def _check_cofactor(self, name, row, col, cofactor):
-    print("\ncofactor(" + name + ", "+ row + ", " + col + ")")
+    print("\ncofactor(" + name + ", " + row + ", " + col + ")")
     print("-----")
     print("\nExpected:")
     print(float(cofactor))
@@ -173,3 +173,36 @@ def _matrix_is_the_following(self, name, rows, cols):
     print("\nGot:")
     print(getattr(world, name))
     assert getattr(world, name) == test_matrix
+
+
+@step(r'inverse\(([A-Za-z][A-Za-z0-9]*)\) is the following (\d+)x(\d+)'
+      r' matrix:')
+def _inverse_matrix_is_the_following(self, name, rows, cols):
+    test_matrix = Matrix(self.table)
+    inv = getattr(world, name).inverse()
+    print("\ninverse(" + name + ")")
+    print("-----")
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(inv)
+    assert inv == test_matrix
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- ([A-Za-z][A-Za-z0-9]*)\s*\*\s*'
+      r'([A-Za-z][A-Za-z0-9]*)')
+def _mutiply_matrices(self, name1, name2, name3):
+    setattr(world, name1, getattr(world, name2) * getattr(world, name3))
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*)\s*\*\s*inverse\(([A-Za-z][A-Za-z0-9]*)\)'
+      r'\s*=\s*([A-Za-z][A-Za-z0-9]*)')
+def _multiply_inverse_matrix(self, name1, name2, name3):
+    inv = getattr(world, name2).inverse()
+    print("\n" + name1 + " * inverse(" + name2 + ")")
+    print("-----")
+    print("\nExpected:")
+    print(getattr(world, name3))
+    print("\nGot:")
+    print(getattr(world, name1) * inv)
+    assert getattr(world, name1) * inv == getattr(world, name3)
