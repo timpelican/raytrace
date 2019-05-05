@@ -163,7 +163,7 @@ def _get_inverse(self, name1, name2):
     setattr(world, name1, getattr(world, name2).inverse())
 
 
-@step(r'([A-Za-z][A-Za-z0-9]*) is the following (\d+)x(\d+) matrix:')
+@step(r'matrix ([A-Za-z][A-Za-z0-9]*) is the following (\d+)x(\d+) matrix:')
 def _matrix_is_the_following(self, name, rows, cols):
     test_matrix = Matrix(self.table)
     print("\nMatrix " + name)
