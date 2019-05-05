@@ -113,6 +113,35 @@ class Matrix(object):
         else:
             return -self.minor(row, col)
 
+    def isInvertible(self):
+        return not equals(self.determinant(), 0)
+
+    def inverse(self):
+        if not self.isInvertible():
+            raise MatrixError('Matrix is not invertible')
+        d = self.determinant()
+        m = ZeroMatrix(self.rows, self.cols)
+        for r in range(0, self.rows):
+            for c in range(0, self.cols):
+                cf = self.cofactor(r, c)
+                m[c][r] = cf / d
+        return m
+
+
+# function inverse(M)
+# fail if M is not invertible
+# M2 ← new matrix of same size as M
+# for row ← 0 to M.size - 1
+# for col ← 0 to M.size - 1
+# c ← cofactor(M, row, col)
+# # note that "col, row" here, instead of "row, col",
+# # accomplishes the transpose operation!
+# M2[col, row] ← c / determinant(M)
+# end for
+# end for
+# return M2
+# end function
+
 
 class MatrixError(Exception):
     def __init__(self, message):

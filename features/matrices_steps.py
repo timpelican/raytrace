@@ -12,6 +12,12 @@ def _m_is_a_matrix(self, rows, cols, name):
 
 @step(r'(\S+)\[(\d+),\s*(\d+)\]\s*=\s*([-+]?\d*\.?\d+)')
 def _check_matrix_element(self, name, row, col, value):
+    print("\n" + name + '[' + str(row) + '][' + str(col) + ']')
+    print("-----")
+    print("\nExpected:")
+    print(value)
+    print("\nGot:")
+    print(getattr(world, name)[int(row)][int(col)])
     assert equals(getattr(world, name)[int(row)][int(col)], float(value))
 
 
@@ -92,6 +98,8 @@ def _check_identity_matrix(self, name):
 
 @step(r'determinant\(([A-Za-z][A-Za-z0-9]*)\)\s*=\s*([-+]?\d*\.?\d+)')
 def _check_determinant(self, name, determinant):
+    print("\ndeterminant(" + name + ")")
+    print("-----")
     print("\nExpected:")
     print(float(determinant))
     print("\nGot:")
@@ -132,9 +140,36 @@ def _check_minor(self, name, row, col, minor):
 @step(r'cofactor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
       r'([-+]?\d*\.?\d+)')
 def _check_cofactor(self, name, row, col, cofactor):
+    print("\ncofactor(" + name + ", "+ row + ", " + col + ")")
+    print("-----")
     print("\nExpected:")
     print(float(cofactor))
     print("\nGot:")
     print(getattr(world, name).cofactor(int(row), int(col)))
     assert equals(getattr(world, name).cofactor(int(row), int(col)),
                   float(cofactor))
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) is (not)?\s?invertible')
+def _check_invertible(self, name, isnot):
+    if isnot == "not":
+        assert not getattr(world, name).isInvertible()
+    else:
+        assert getattr(world, name).isInvertible()
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- inverse\(([A-Za-z][A-Za-z0-9]*)\)')
+def _get_inverse(self, name1, name2):
+    setattr(world, name1, getattr(world, name2).inverse())
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) is the following (\d+)x(\d+) matrix:')
+def _matrix_is_the_following(self, name, rows, cols):
+    test_matrix = Matrix(self.table)
+    print("\nMatrix " + name)
+    print("-----")
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_matrix
