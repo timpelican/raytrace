@@ -85,9 +85,10 @@ class Matrix(object):
         elif self.rows == 2:
             return (self[0][0] * self[1][1]) - (self[0][1] * self[1][0])
         else:
-            raise MatrixError("Can't calculate determinant for a "
-                              + str(self.rows) + "x" + str(self.cols)
-                              + " matrix")
+            d = 0
+            for c in range(0, self.cols):
+                d += self[0][c] * self.cofactor(0, c)
+            return d
 
     def submatrix(self, subrow, subcol):
         m = ZeroMatrix(self.rows - 1, self.cols - 1)
@@ -116,6 +117,9 @@ class Matrix(object):
 class MatrixError(Exception):
     def __init__(self, message):
         self.message = message
+
+    def __str__(self):
+        return self.message
 
 
 def IdentityMatrix(size):

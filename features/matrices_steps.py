@@ -92,7 +92,7 @@ def _check_identity_matrix(self, name):
 
 @step(r'determinant\(([A-Za-z][A-Za-z0-9]*)\)\s*=\s*([-+]?\d*\.?\d+)')
 def _check_determinant(self, name, determinant):
-    print("Expected:")
+    print("\nExpected:")
     print(float(determinant))
     print("\nGot:")
     print(getattr(world, name).determinant())
@@ -103,7 +103,7 @@ def _check_determinant(self, name, determinant):
       r'following (\d+)x(\d+) matrix:')
 def _check_submatrix(self, name, subrow, subcol, rows, cols):
     test_matrix = Matrix(self.table)
-    print("Expected:")
+    print("\nExpected:")
     print(test_matrix)
     print("\nGot:")
     print(getattr(world, name).submatrix(int(subrow), int(subcol)))
@@ -121,7 +121,7 @@ def _get_submatrix(self, name1, name2, subrow, subcol):
 @step(r'minor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
       r'([-+]?\d*\.?\d+)')
 def _check_minor(self, name, row, col, minor):
-    print("Expected:")
+    print("\nExpected:")
     print(float(minor))
     print("\nGot:")
     print(getattr(world, name).minor(int(row), int(col)))
@@ -132,7 +132,7 @@ def _check_minor(self, name, row, col, minor):
 @step(r'cofactor\(([A-Za-z][A-Za-z0-9]*)\s*,\s*(\d+)\s*,\s*(\d+)\)\s*=\s*'
       r'([-+]?\d*\.?\d+)')
 def _check_cofactor(self, name, row, col, cofactor):
-    print("Expected:")
+    print("\nExpected:")
     print(float(cofactor))
     print("\nGot:")
     print(getattr(world, name).cofactor(int(row), int(col)))
