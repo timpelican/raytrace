@@ -40,3 +40,27 @@ Scenario: Reflection is scaling by a negative value
   Given transform <- scaling(-1, 1, 1)
   And p <- point(2, 3, 4)
   Then transform * p = point(-2, 3, 4)
+
+Scenario: Rotating a point around the x axis
+  Given p <- point(0, 1, 0)
+  And half_quarter <- rotation_x(0.7853981633974483) # pi / 4
+  And full_quarter <- rotation_x(1.5707963267948966) # pi / 2
+  Then half_quarter * p = point(0, 0.7071067811865476, 0.7071067811865476)
+                                    # sqrt(2)/2
+  And full_quarter * p = point(0, 0, 1)
+
+Scenario: Rotating a point around the y axis
+  Given p <- point(0, 0, 1)
+  And half_quarter <- rotation_y(0.7853981633974483) # pi / 4
+  And full_quarter <- rotation_y(1.5707963267948966) # pi / 2
+  Then half_quarter * p = point(0.7071067811865476, 0, 0.7071067811865476)
+                                    # sqrt(2)/2
+  And full_quarter * p = point(1, 0, 0)
+
+Scenario: Rotating a point around the z axis
+  Given p <- point(0, 1, 0)
+  And half_quarter <- rotation_z(0.7853981633974483) # pi / 4
+  And full_quarter <- rotation_z(1.5707963267948966) # pi / 2
+  Then half_quarter * p = point(-0.7071067811865476, 0.7071067811865476, 0)
+                                    # sqrt(2)/2
+  And full_quarter * p = point(-1, 0, 0)

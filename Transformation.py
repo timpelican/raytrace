@@ -1,5 +1,5 @@
 from Matrix import IdentityMatrix
-
+from math import sin, cos
 
 def Translation(x, y, z):
     m = IdentityMatrix(4)
@@ -14,4 +14,31 @@ def Scaling(x, y, z):
     m[0][0] = x
     m[1][1] = y
     m[2][2] = z
+    return m
+
+
+def Rotation_x(rads):
+    m = IdentityMatrix(4)
+    m[1][1] = cos(rads)
+    m[1][2] = -sin(rads)
+    m[2][1] = sin(rads)
+    m[2][2] = cos(rads)
+    return m
+
+
+def Rotation_y(rads):
+    m = IdentityMatrix(4)
+    m[0][0] = cos(rads)
+    m[0][2] = sin(rads)
+    m[2][0] = -sin(rads)
+    m[2][2] = cos(rads)
+    return m
+
+
+def Rotation_z(rads):
+    m = IdentityMatrix(4)
+    m[0][0] = cos(rads)
+    m[0][1] = -sin(rads)
+    m[1][0] = sin(rads)
+    m[1][1] = cos(rads)
     return m
