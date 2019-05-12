@@ -168,3 +168,14 @@ def _colour_scalar_multiplication(self, name, multiplier, r, g, b):
 def _colour_multiplication(self, name1, name2, r, g, b):
     test_colour = Colour(float(r), float(g), float(b))
     assert getattr(world, name1) * getattr(world, name2) == test_colour
+
+
+@step(r'point ([A-Za-z][A-Za-z0-9_]*)\s*=\s*point\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)')
+def _name_equals_point(self, name, x, y, z):
+    test_point = Point(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_point)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_point

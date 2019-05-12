@@ -206,3 +206,10 @@ def _multiply_inverse_matrix(self, name1, name2, name3):
     print("\nGot:")
     print(getattr(world, name1) * inv)
     assert getattr(world, name1) * inv == getattr(world, name3)
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- chain3 ([A-Za-z][A-Za-z0-9]*)\s*\*\s*'
+      r'([A-Za-z][A-Za-z0-9]*)\s*\*\s*([A-Za-z][A-Za-z0-9]*)')
+def _mutiply_matrices_chain3(self, name1, name2, name3, name4):
+    setattr(world, name1, getattr(world, name2) * getattr(world, name3)
+            * getattr(world, name4))
