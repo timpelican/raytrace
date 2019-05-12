@@ -1,7 +1,7 @@
 from __future__ import print_function
 from aloe import step, world
 from Transformation import Translation, Scaling, Rotation_x, Rotation_y,\
-    Rotation_z
+    Rotation_z, Shearing
 from Tuple4 import Point, Vector
 
 
@@ -67,3 +67,11 @@ def __rotation_y(self, name, rads):
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- rotation_z\s*\(([-+]?\d*\.?\d+)\)')
 def __rotation_z(self, name, rads):
     setattr(world, name, Rotation_z(float(rads)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- shearing\s*\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def __rotation_z(self, name, xy, xz, yx, yz, zx, zy):
+    setattr(world, name, Shearing(float(xy), float(xz), float(yx), float(yz),
+                                  float(zx), float(zy)))
