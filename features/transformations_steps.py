@@ -72,6 +72,23 @@ def __rotation_z(self, name, rads):
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- shearing\s*\(([-+]?\d*\.?\d+)\s*,\s*'
       r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
       r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
-def __rotation_z(self, name, xy, xz, yx, yz, zx, zy):
+def __shearing(self, name, xy, xz, yx, yz, zx, zy):
     setattr(world, name, Shearing(float(xy), float(xz), float(yx), float(yz),
                                   float(zx), float(zy)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- ([A-Za-z][A-Za-z0-9_]*).translate\('
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _translate_method(self, name1, name2, x, y, z):
+    setattr(world, name1, getattr(world, name2).translate(float(x), float(y),
+                                                          float(z)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- ([A-Za-z][A-Za-z0-9_]*).rotate_x\('
+      r'([-+]?\d*\.?\d+)\).scale\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)'
+      r'\s*,\s*([-+]?\d*\.?\d+)\).translate\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _method_chain(self, name1, name2, rads, sx, sy, sz, tx, ty, tz):
+    setattr(world, name1, getattr(world, name2).rotate_x(float(rads)).
+            scale(float(sx), float(sy), float(sz)).
+            translate(float(tx), float(ty), float(tz)))

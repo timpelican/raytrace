@@ -117,3 +117,13 @@ Scenario: Chained transformations must be applied in reverse order
   And C <- translation(10, 5, 7)
   When T <- chain3 C * B * A
   Then T * p = point(15, 0, 7)
+
+Scenario: Transformations can be invoked by method
+  Given p1 <- point(1, 0, 1)
+  When p2 <- p1.translate(10, 5, 7)
+  Then point p2 = point(11, 5, 8)
+
+Scenario: Chained transformation methods must be applied in forward order
+  Given p1 <- point(1, 0, 1)
+  And p2 <- p1.rotate_x(1.5707963267948966).scale(5, 5, 5).translate(10, 5, 7)
+  Then point p2 = point(15, 0, 7)

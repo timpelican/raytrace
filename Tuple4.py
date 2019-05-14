@@ -2,6 +2,7 @@
 
 from maths import equals    # American naming means we can call ours 'maths'
 from math import sqrt
+import Transformation
 
 
 class Tuple4(object):
@@ -94,6 +95,30 @@ class Tuple4(object):
     red = property(get_red, set_red)
     green = property(get_green, set_green)
     blue = property(get_blue, set_blue)
+
+    def translate(self, x, y, z):
+        m = Transformation.Translation(x, y, z)
+        return m * self
+
+    def scale(self, x, y, z):
+        m = Transformation.Scaling(x, y, z)
+        return m * self
+
+    def rotate_x(self, rads):
+        m = Transformation.Rotation_x(rads)
+        return m * self
+
+    def rotate_y(self, rads):
+        m = Transformation.Rotation_z(rads)
+        return m * self
+
+    def rotate_z(self, rads):
+        m = Transformation.Rotation_z(rads)
+        return m * self
+
+    def shear(self, xy, xz, yx, yz, zx, zy):
+        m = Transformation.Shearing(xy, xz, yx, yz, zx, zy)
+        return m * self
 
 
 def Point(x, y, z):
