@@ -1,4 +1,4 @@
-Feature: Matrix operations
+Feature: Ray operation
 
 As a programmer
 I want to work with rays
