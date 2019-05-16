@@ -1,6 +1,6 @@
 # Matrix operations
 from maths import equals
-from Tuple4 import Tuple4
+import Tuple4
 
 
 class Matrix(object):
@@ -43,10 +43,10 @@ class Matrix(object):
                         total += (self[r][m] * other[m][c])
                     data[r].append(total)
             return Matrix(data)
-        elif isinstance(other, Tuple4):
+        elif isinstance(other, Tuple4.Tuple4):
             m1 = Matrix([[other.x], [other.y], [other.z], [other.w]])
             m2 = self * m1
-            return Tuple4(m2[0][0], m2[1][0], m2[2][0], m2[3][0])
+            return Tuple4.Tuple4(m2[0][0], m2[1][0], m2[2][0], m2[3][0])
         else:
             raise MatrixError('Cannot mutiply a matrix by a '
                               + type(other).__name__)
