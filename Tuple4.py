@@ -50,7 +50,7 @@ class Tuple4(object):
 
     def __str__(self):
         # No f-strings pre 3.6
-        return '{x}, {y}, {z}. {w}'.format(x=self.x, y=self.y, z=self.z,
+        return '{x}, {y}, {z}, {w}'.format(x=self.x, y=self.y, z=self.z,
                                            w=self.w)
 
     def magnitude(self):
