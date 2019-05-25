@@ -7,6 +7,12 @@ class Intersection(object):
         self.t = t
         self.object = object
 
+    def __str__(self):
+        return '({t}, {o})'.format(t=self.t, o=self.object)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class Intersections(object):
     def __init__(self, *argv):
@@ -19,3 +25,13 @@ class Intersections(object):
 
     def __getitem__(self, index):
         return self.data[index]
+
+    def hit(self):
+        self.data.sort(key=lambda x: x.t)
+        for i in self.data:
+            if i.t > 0:
+                return i
+        return None
+
+    def __str__(self):
+        return str(self.data)
