@@ -1,4 +1,5 @@
 # Spheres
+from Intersection import Intersection, Intersections
 import Tuple4
 import math
 
@@ -19,4 +20,5 @@ class Sphere(object):
             return ()
         t1 = (-b - math.sqrt(discriminant)) / (2 * a)
         t2 = (-b + math.sqrt(discriminant)) / (2 * a)
-        return (t1, t2)
+        return Intersections(Intersection(t1, self),
+                             Intersection(t2, self))
