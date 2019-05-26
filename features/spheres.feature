@@ -77,3 +77,44 @@ Scenario: Intersecting a translated sphere with a ray
   When set_transform(s, t)
   And xs <- intersect(s, r)
   Then xs.count = 0
+
+Scenario: The normal on a sphere at a point on the x axis
+  Given s <- sphere()
+  When n <- normal_at(s, point(1, 0, 0))
+  Then vector n = vector(1, 0, 0)
+
+Scenario: The normal on a sphere at a point on the y axis
+  Given s <- sphere()
+  When n <- normal_at(s, point(0, 1, 0))
+  Then vector n = vector(0, 1, 0)
+
+Scenario: The normal on a sphere at a point on the z axis
+  Given s <- sphere()
+  When n <- normal_at(s, point(0, 0, 1))
+  Then vector n = vector(0, 0, 1)
+
+Scenario: The normal on a sphere at a nonaxial point
+  Given s <- sphere()
+  When n <- normal_at(s, point(0.57735, 0.57735, 0.57735))
+  Then vector n = vector(0.57735, 0.57735, 0.57735)  # sqrt(3)/3
+
+Scenario: The normal is a normalized vector
+  Given s <- sphere()
+  When n <- normal_at(s, point(0.57735, 0.57735, 0.57735))
+  Then vector n is normalized
+
+Scenario: Computing the normal on a translated sphere
+  Given s <- sphere()
+  And t <- translation(0, 1, 0)
+  And set_transform(s, t)
+  When n <- normal_at(s, point(0, 1.70711, -0.70711))
+  Then vector n = vector(0, 0.70711, -0.70711)
+
+Scenario: Computing the normal on a transformed sphere
+  Given s <- sphere()
+  And m1 <- scaling(1, 0.5, 1)
+  And m2 <- rotation_z(0.62831) # pi/5
+  And m <- m1 * m2
+  And set_transform(s, m)
+  When n <- normal_at(s, point(0, 0.70710, -0.70710)) # sqrt(2)/2
+  Then vector n = vector(0, 0.97014, -0.24254)

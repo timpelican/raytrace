@@ -179,3 +179,24 @@ def _name_equals_point(self, name, x, y, z):
     print("\nGot:")
     print(getattr(world, name))
     assert getattr(world, name) == test_point
+
+
+@step(r'vector ([A-Za-z][A-Za-z0-9_]*)\s*=\s*vector\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)')
+def _name_equals_vector(self, name, x, y, z):
+    test_vector = Vector(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_vector)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_vector
+
+
+@step(r'vector ([A-Za-z][A-Za-z0-9_]*) is normalized')
+def _vector_is_normalized(self, name):
+    test_vector = getattr(world, name)
+    print("\nExpected:")
+    print(test_vector)
+    print("\nGot:")
+    print(test_vector.normalize())
+    assert test_vector == test_vector.normalize()
