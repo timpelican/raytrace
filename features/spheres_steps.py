@@ -1,5 +1,7 @@
 from aloe import world, step
 from Sphere import Sphere
+from Matrix import IdentityMatrix
+from maths import equals
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\)')
@@ -29,3 +31,30 @@ def _index_equals_value(self, name, index, value):
     print(float(value))
     print("\nGot:")
     print(getattr(world, name)[int(index)])
+    assert equals(getattr(world, name)[int(index)], float(value))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.transform is the identity_matrix')
+def _check_transform_identity(self, name):
+    test_matrix = IdentityMatrix(4)
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name).transform)
+    assert getattr(world, name).transform == test_matrix
+
+
+@step(r'set_transform\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
+      r'([A-Za-z][A-Za-z0-9_]*)\)')
+def _set_transform(self, obj, transform):
+    getattr(world, obj).transform = getattr(world, transform)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.transform\s*=\s*([A-Za-z][A-Za-z0-9_]*)')
+def _check_transform_name(self, name1, name2):
+    test_matrix = getattr(world, name2)
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name1).transform)
+    assert getattr(world, name1).transform == test_matrix
