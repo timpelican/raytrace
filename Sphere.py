@@ -20,7 +20,7 @@ class Sphere(object):
         c = sphere_to_ray.dot(sphere_to_ray) - 1
         discriminant = math.pow(b, 2) - 4 * a * c
         if discriminant < 0:
-            return ()
+            return Intersections()
         t1 = (-b - math.sqrt(discriminant)) / (2 * a)
         t2 = (-b + math.sqrt(discriminant)) / (2 * a)
         return Intersections(Intersection(t1, self),
