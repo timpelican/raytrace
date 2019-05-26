@@ -17,7 +17,7 @@ def _ray_from_values(self, name, px, py, pz, vx, vy, vz):
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*)\.(origin|direction)\s*=\s*'
-      r'([A-Za-z][A-Za-z0-9_]*)')
+      r'([A-Za-z][A-Za-z0-9_]*)$')
 def _ray_member_equals_name(self, name1, member, name2):
     print("\nExpected:")
     print(getattr(world, name2))
@@ -36,3 +36,32 @@ def _position_equals_point(self, name, t, px, py, pz):
     print("\nGot:")
     print(getattr(world, name).position(float(t)))
     assert getattr(world, name).position(float(t)) == test_point
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- transform\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _transform_ray(self, ray1, ray2, transform):
+    setattr(world, ray1,
+            getattr(world, ray2).transform(getattr(world, transform)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.origin\s*=\s*point\(([-+]?\d*\.?\d+)'
+      r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _ray_origin_equals_point(self, name, x, y, z):
+    test_point = Point(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_point)
+    print("\nGot:")
+    print(getattr(world, name).origin)
+    assert getattr(world, name).origin == test_point
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.direction\s*=\s*vector\(([-+]?\d*\.?\d+)'
+      r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _ray_direction_equals_vector(self, name, x, y, z):
+    test_vector = Vector(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_vector)
+    print("\nGot:")
+    print(getattr(world, name).direction)
+    assert getattr(world, name).direction == test_vector
