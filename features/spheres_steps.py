@@ -35,7 +35,7 @@ def _index_equals_value(self, name, index, value):
     assert equals(getattr(world, name)[int(index)], float(value))
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\.transform is the identity_matrix')
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.transform equals the identity_matrix')
 def _check_transform_identity(self, name):
     test_matrix = IdentityMatrix(4)
     print("\nExpected:")

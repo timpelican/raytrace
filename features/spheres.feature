@@ -52,7 +52,7 @@ Scenario: Intersect sets the object on the intersection
 
 Scenario: A sphere's default transformation
   Given s <- sphere()
-  Then s.transform is the identity_matrix
+  Then s.transform equals the identity_matrix
 
 Scenario: Changing a sphere's transformation
   Given s <- sphere()
