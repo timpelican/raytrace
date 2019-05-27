@@ -200,3 +200,11 @@ def _vector_is_normalized(self, name):
     print("\nGot:")
     print(test_vector.normalize())
     assert test_vector == test_vector.normalize()
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- reflect\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
+      r'([A-Za-z][A-Za-z0-9_]*)\)')
+def _reflect_vector(self, name1, name2, normal):
+    v = getattr(world, name2)
+    n = getattr(world, normal)
+    setattr(world, name1, v.reflect(n))

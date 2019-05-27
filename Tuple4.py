@@ -32,7 +32,7 @@ class Tuple4(object):
         return Tuple4(-self.x, -self.y, -self.z, -self.w)
 
     def __mul__(self, m):
-        if isinstance(m, float):
+        if isinstance(m, float) or isinstance(m, int):
             return Tuple4(self.x * m, self.y * m, self.z * m, self.w * m)
         # Only valid for Colours, which is why we should have a subclass
         elif isinstance(m, Tuple4):
@@ -119,6 +119,9 @@ class Tuple4(object):
     def shear(self, xy, xz, yx, yz, zx, zy):
         m = Transformation.Shearing(xy, xz, yx, yz, zx, zy)
         return m * self
+
+    def reflect(self, normal):
+        return self - (normal * 2 * self.dot(normal))
 
 
 def Point(x, y, z):

@@ -116,5 +116,5 @@ Scenario: Computing the normal on a transformed sphere
   And m2 <- rotation_z(0.62831) # pi/5
   And m <- m1 * m2
   And set_transform(s, m)
-  When n <- normal_at(s, point(0, 0.70710, -0.70710)) # sqrt(2)/2
+  When n <- normal_at(s, point(0, 0.70711, -0.70711)) # sqrt(2)/2
   Then vector n = vector(0, 0.97014, -0.24254)

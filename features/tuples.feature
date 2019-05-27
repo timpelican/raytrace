@@ -140,3 +140,15 @@ Scenario: Multiplying colours
   Given c1 <- colour(1, 0.2, 0.4)
   And c2 <- colour(0.9, 1, 0.1)
   Then c1 * c2 = colour(0.9, 0.2, 0.04)
+
+Scenario: Reflecting a vector approaching at 45 degrees
+  Given v <- vector(1, -1, 0)
+  And n <- vector(0, 1, 0)
+  When r <- reflect(v, n)
+  Then vector r = vector(1, 1, 0)
+
+Scenario: Reflecting a vector off a slanted surface
+  Given v <- vector(0, -1, 0)
+  And n <- vector(0.70711, 0.70711, 0) # sqrt(2)/2
+  When r <- reflect(v, n)
+  Then vector r = vector(1, 0, 0)
