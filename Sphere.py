@@ -3,11 +3,13 @@ from Intersection import Intersection, Intersections
 import Tuple4
 import math
 import Matrix
+import Material
 
 
 class Sphere(object):
     def __init__(self):
         self.transform = Matrix.IdentityMatrix(4)
+        self.material = Material.Material()
 
     def intersects(self, ray):
         # Transform the ray into object coordinate space

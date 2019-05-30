@@ -10,3 +10,13 @@ class Material(object):
         self.diffuse = diffuse
         self.specular = specular
         self.shininess = shininess
+
+    def __eq__(self, other):
+        if self.colour == other.colour and \
+           self.ambient == other.ambient and \
+           self.diffuse == other.diffuse and \
+           self.specular == other.specular and \
+           self.shininess == other.shininess:
+            return True
+        else:
+            return False

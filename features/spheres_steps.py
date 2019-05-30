@@ -3,6 +3,7 @@ from Sphere import Sphere
 from Matrix import IdentityMatrix
 from maths import equals
 from Tuple4 import Point
+from Material import Material
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\)')
@@ -68,3 +69,38 @@ def _normal_at_point(self, name1, name2, x, y, z):
     p = Point(float(x), float(y), float(z))
     n = getattr(world, name2).normal_at(p)
     setattr(world, name1, n)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- ([A-Za-z][A-Za-z0-9_]*)\.material')
+def _get_material(self, name1, name2):
+    setattr(world, name1, getattr(world, name2).material)
+
+
+@step(r'material ([A-Za-z][A-Za-z0-9_]*) is the default material')
+def _check_default_material(self, name):
+    test_material = Material()
+    print("\nExpected:")
+    print(test_material)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_material
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*).ambient <- ([-+]?\d*\.?\d+)')
+def _set_ambient(self, name, ambient):
+    setattr(world, name, float(ambient))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*).material <- ([A-Za-z][A-Za-z0-9_]*)')
+def _set_material(self, name1, name2):
+    getattr(world, name1).material = getattr(world, name2)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*).material\s*=\s*([A-Za-z][A-Za-z0-9_]*)')
+def _check_material(self, name1, name2):
+    test_material = getattr(world, name2)
+    print("\nExpected:")
+    print(test_material)
+    print("\nGot:")
+    print(getattr(world, name1).material)
+    assert getattr(world, name1).material == test_material
