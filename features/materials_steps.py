@@ -28,3 +28,25 @@ def _material_member_equals_value(self, name, member, value):
     print("\nGot:")
     print(getattr(getattr(world, name), member))
     assert getattr(getattr(world, name), member) == test_value
+
+
+@step(r'When ([A-Za-z][A-Za-z0-9_]*) <- lighting\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _check_lighting(self, name, mat, light, pos, eye, norm):
+    setattr(world, name,
+            getattr(world, mat).lighting(getattr(world, light),
+                                         getattr(world, pos),
+                                         getattr(world, eye),
+                                         getattr(world, norm)))
+
+
+@step(r'colour ([A-Za-z][A-Za-z0-9_]*)\s*=\s*colour\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _check_named_colour_value(self, name, r, g, b):
+    test_colour = Colour(float(r), float(g), float(b))
+    print("\nExpected:")
+    print(test_colour)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_colour

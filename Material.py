@@ -1,5 +1,6 @@
 # Materials
 import Tuple4
+import math
 
 
 class Material(object):
@@ -20,3 +21,41 @@ class Material(object):
             return True
         else:
             return False
+
+    def lighting(self, light, pos, eye, norm):
+        black = Tuple4.Colour(0, 0, 0)
+
+        # combine the surface color with the light's color/intensity
+        effective_colour = self.colour * light.intensity
+
+        # find the direction to the light source
+        lightv = (light.position - pos).normalize()
+
+        # compute the ambient contribution
+        ambient = effective_colour * self.ambient
+
+        # light_dot_normal represents the cosine of the angle between the
+        # light vector and the normal vector. A negative number means the
+        # light is on the other side of the surface.
+        light_dot_normal = lightv.dot(norm)
+        if light_dot_normal < 0:
+            diffuse = black
+            specular = black
+        else:
+            # compute the diffuse contribution
+            diffuse = effective_colour * self.diffuse * light_dot_normal
+
+        # reflect_dot_eye represents the cosine of the angle between the
+        # reflection vector and the eye vector. A negative number means the
+        # light reflects away from the eye.
+        reflectv = (-lightv).reflect(norm)
+        reflect_dot_eye = reflectv.dot(eye)
+        if reflect_dot_eye <= 0:
+            specular = black
+        else:
+            # compute the specular contribution
+            factor = math.pow(reflect_dot_eye, self.shininess)
+            specular = light.intensity * self.specular * factor
+
+        # Add the three contributions together to get the final shading
+        return ambient + diffuse + specular

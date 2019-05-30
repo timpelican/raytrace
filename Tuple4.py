@@ -53,6 +53,9 @@ class Tuple4(object):
         return '{x}, {y}, {z}, {w}'.format(x=self.x, y=self.y, z=self.z,
                                            w=self.w)
 
+    def __repr__(self):
+        return self.__str__()
+
     def magnitude(self):
         return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2 + self.w ** 2)
 
