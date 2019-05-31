@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+from Tuple4 import Point, Colour
+from Canvas import Canvas
+from Sphere import Sphere
+from Ray import Ray
+from Transformation import Scaling, Rotation_z, Shearing
+from math import pi
+from Light import PointLight
+
+
+ray_origin = Point(0, 0, -5)
+wall_z = 10.0
+wall_size = 7.0
+canvas_pixels = 100
+pixel_size = wall_size / canvas_pixels
+half = wall_size / 2
+red = Colour(0.8, 0, 0)
+s = Sphere()
+s.material.colour = Colour(1, 0.2, 1)
+
+# Lighting
+light_position = Point(-10, 10, -10)
+light_colour = Colour(1, 1, 1)
+light = PointLight(light_position, light_colour)
+
+# Try various transforms
+# shrink it along the y axis
+# s.transform = Scaling(1, 0.5, 1)
+# shrink it along the x axis
+# s.transform = Scaling(0.5, 1, 1)
+# shrink it, and rotate it!
+# s.transform = Rotation_z(pi / 4) * Scaling(0.5, 1, 1)
+# shrink it, and skew it!
+# s.transform = Shearing(1, 0, 0, 0, 0, 0) * Scaling(0.5, 1, 1)
+
+c = Canvas(canvas_pixels, canvas_pixels)
+
+for y in range(0, canvas_pixels):
+    world_y = half - pixel_size * y
+
+    for x in range(0, canvas_pixels):
+        world_x = -half + pixel_size * x
+
+        position = Point(world_x, world_y, wall_z)
+        r = Ray(ray_origin, (position - ray_origin).normalize())
+        xs = s.intersects(r)
+        if xs.hit():
+            hit = xs.hit()
+            point = r.position(hit.t)
+            normal = hit.object.normal_at(point)
+            eye = -r.direction
+            colour = hit.object.material.lighting(light, point, eye, normal)
+            c.write_pixel(x, y, colour)
+
+c.to_ppm_file('sphere-test2.ppm')
