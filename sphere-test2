@@ -22,6 +22,9 @@ s.material.colour = Colour(1, 0.2, 1)
 light_position = Point(-10, 10, -10)
 light_colour = Colour(1, 1, 1)
 light = PointLight(light_position, light_colour)
+light2_position = Point(-5, 15, -10)
+light2_colour = Colour(0, 1, 0)
+light2 = PointLight(light2_position, light2_colour)
 
 # Try various transforms
 # shrink it along the y axis
@@ -49,7 +52,8 @@ for y in range(0, canvas_pixels):
             point = r.position(hit.t)
             normal = hit.object.normal_at(point)
             eye = -r.direction
-            colour = hit.object.material.lighting(light, point, eye, normal)
+            colour = hit.object.material.lighting(light, point, eye, normal) +\
+                hit.object.material.lighting(light2, point, eye, normal)
             c.write_pixel(x, y, colour)
 
 c.to_ppm_file('sphere-test2.ppm')
