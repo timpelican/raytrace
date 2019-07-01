@@ -34,3 +34,17 @@ class Sphere(object):
         world_n = self.transform.inverse().transpose() * object_n
         world_n.w = 0
         return world_n.normalize()
+
+    def __str__(self):
+        return 'Sphere(({t}), ({m}))'.format(t=self.transform,
+                                             m=self.material)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        if self.transform == other.transform and \
+           self.material == other.material:
+            return True
+        else:
+            return False

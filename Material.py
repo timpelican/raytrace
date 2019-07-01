@@ -59,3 +59,11 @@ class Material(object):
 
         # Add the three contributions together to get the final shading
         return ambient + diffuse + specular
+
+    def __str__(self):
+        return 'Material(({c}), {a}, {d}, {s1}, {s2})'.\
+            format(c=self.colour, a=self.ambient, d=self.diffuse,
+                   s1=self.specular, s2=self.shininess)
+
+    def __repr__(self):
+        return self.__str__()

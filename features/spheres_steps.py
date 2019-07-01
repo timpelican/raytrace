@@ -2,13 +2,56 @@ from aloe import world, step
 from Sphere import Sphere
 from Matrix import IdentityMatrix
 from maths import equals
-from Tuple4 import Point
+from Tuple4 import Point, Colour
 from Material import Material
+import re
+import Transformation
 
-
-@step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\)')
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\)$')
 def _sphere(self, name):
     setattr(world, name, Sphere())
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\) with:')
+def _sphere_with_values(self, name):
+    s = Sphere()
+    # TODO: feels like we should have a generic function for parsing
+    # gherkin tables
+    digit = re.compile(r'^[-+]?\d*\.?\d+$')
+    tuple3 = re.compile(r'^\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,\s*'
+                        r'[-+]?\d*\.?\d+\)$')
+    subattr = re.compile(r'.*\..*')
+    scaling = re.compile(r'^scaling\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,\s*'
+                        r'[-+]?\d*\.?\d+\)$')
+    for row in self.table:
+        attr = str(row[0])
+        obj = s
+        print(obj, attr)
+        while subattr.match(attr):
+            print attr.split('.')
+            obj = getattr(obj, attr.split('.', 2)[0])
+            attr = attr.split('.', 2)[1]
+            print(obj, attr)
+        value = row[1]
+        if digit.match(value):
+            print("DIGIT", attr, float(value))
+            setattr(obj, attr, float(value))
+        if tuple3.match(value):
+            values = value.replace("(", "").replace(")", "").split(',')
+            print("TUPLE3", attr, float(values[0]), float(values[1]),
+                  float(values[2]))
+            setattr(obj, attr, Colour(float(values[0]), float(values[1]),
+                                      float(values[2])))
+        if scaling.match(value):
+            values = value.split('(')[1].replace("(", "").replace(")", "").\
+                split(',')
+            print("SCALING", attr, Transformation.Scaling(float(values[0]),
+                                                          float(values[1]),
+                                                          float(values[2])))
+            setattr(obj, attr, Transformation.Scaling(float(values[0]),
+                                                      float(values[1]),
+                                                      float(values[2])))
+    setattr(world, name, s)
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- intersect\(([A-Za-z][A-Za-z0-9_]*)'
