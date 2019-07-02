@@ -3,12 +3,19 @@ import Light
 import Tuple4
 import Sphere
 import Transformation
+import Intersection
 
 
 class World(object):
     def __init__(self):
         self.lights = []
         self.objects = []
+
+    def intersections(self, ray):
+        i = Intersection.Intersections()
+        for object in self.objects:
+            i += object.intersects(ray)
+        return i.sort()
 
 
 def DefaultWorld():

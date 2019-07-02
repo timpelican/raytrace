@@ -55,3 +55,12 @@ def _check_contains_object(self, name1, name2):
         if o == test_object:
             found = True
     assert found is True
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- intersect_world\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _intersect_world(self, name1, name2, name3):
+    w = getattr(world, name2)
+    r = getattr(world, name3)
+    i = w.intersections(r)
+    setattr(world, name1, i)

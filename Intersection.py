@@ -1,6 +1,8 @@
 # Intersections track the t-value for the ray
 # and the object it intersected at that t-value
 
+import itertools
+
 
 class Intersection(object):
     def __init__(self, t, object):
@@ -35,3 +37,13 @@ class Intersections(object):
 
     def __str__(self):
         return str(self.data)
+
+    def __add__(self, other):
+        i = Intersections()
+        for d in itertools.chain(self.data, other.data):
+            i.data.append(d)
+        return i
+
+    def sort(self):
+        self.data.sort(key=lambda x: x.t)
+        return self
