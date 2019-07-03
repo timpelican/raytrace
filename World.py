@@ -17,6 +17,15 @@ class World(object):
             i += object.intersects(ray)
         return i.sort()
 
+    def shade_hit(self, comp):
+        # Start with black
+        c = Tuple4.Colour(0, 0, 0)
+        # Then add the contribution from each light source
+        for l in self.lights:
+            c += comp.object.material.lighting(l, comp.point, comp.eyev,
+                                               comp.normalv)
+        return c
+
 
 def DefaultWorld():
     w = World()

@@ -64,3 +64,31 @@ def _intersect_world(self, name1, name2, name3):
     r = getattr(world, name3)
     i = w.intersections(r)
     setattr(world, name1, i)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- the first object in '
+      r'([A-Za-z][A-Za-z0-9_]*)')
+def _first_world_object(self, name1, name2):
+    setattr(world, name1, getattr(world, name2).objects[0])
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- the second object in '
+      r'([A-Za-z][A-Za-z0-9_]*)')
+def _second_world_object(self, name1, name2):
+    setattr(world, name1, getattr(world, name2).objects[1])
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- shade_hit\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _get_shade_hit(self, name1, name2, name3):
+    w = getattr(world, name2)
+    c = getattr(world, name3)
+    setattr(world, name1, w.shade_hit(c))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.light <- ([A-Za-z][A-Za-z0-9_]*)')
+def _set_light_by_name(self, name1, name2):
+    # Replace the World light array with a new light
+    w = getattr(world, name1)
+    light = getattr(world, name2)
+    w.lights = [light]

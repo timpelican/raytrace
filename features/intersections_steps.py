@@ -166,3 +166,17 @@ def _compare_normalv_by_value(self, name, x, y, z):
     print("\nGot:")
     print(value)
     assert value == test_value
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*)\.inside is (true|false)')
+def _check_inside(self, name, truefalse):
+    if truefalse == "true":
+        test_value = True
+    else:
+        test_value = False
+    value = getattr(world, name).inside
+    print("\nExpected:")
+    print(test_value)
+    print("\nGot:")
+    print(value)
+    assert value == test_value
