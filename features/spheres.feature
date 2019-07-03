@@ -47,8 +47,8 @@ Scenario: Intersect sets the object on the intersection
   And s <- sphere()
   When xs <- intersect(s, r)
   Then xs.count = 2
-  And xs[0].object = s
-  And xs[1].object = s
+  And xs[0].object = object s
+  And xs[1].object = object s
 
 Scenario: A sphere's default transformation
   Given s <- sphere()

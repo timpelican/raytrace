@@ -15,6 +15,18 @@ class Intersection(object):
     def __repr__(self):
         return self.__str__()
 
+    def prepare_computations(self, ray):
+        # instantiate a data structure for storing some precomputed values
+        comps = Computation()
+        # copy the intersection's properties, for convenience
+        comps.t = self.t
+        comps.object = self.object
+        # precompute some useful values
+        comps.point = ray.position(comps.t)
+        comps.eyev = -ray.direction
+        comps.normalv = comps.object.normal_at(comps.point)
+        return comps
+
 
 class Intersections(object):
     def __init__(self, *argv):
@@ -47,3 +59,8 @@ class Intersections(object):
     def sort(self):
         self.data.sort(key=lambda x: x.t)
         return self
+
+
+class Computation(object):
+    def __init__(self):
+        pass

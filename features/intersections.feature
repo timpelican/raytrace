@@ -9,7 +9,7 @@ Scenario: An intersection encapsulates t and object
 Given s <- sphere()
 When i <- intersection(3.5, s)
 Then i.t = 3.5
-And i.object = s
+And i.object = object s
 
 Scenario: Aggregating intersections
   Given s <- sphere()
@@ -53,3 +53,14 @@ Scenario: The hit is always the lowest non-negative intersection
   And xs <- intersections(i1, i2, i3, i4)
   When i <- hit(xs)
   Then hit i = i4
+
+Scenario: Precomputing the state of an intersection
+  Given r <- ray(point(0, 0, -5), vector(0, 0, 1))
+  And shape <- sphere()
+  And i <- intersection(4, shape)
+  When comps <- prepare_computations(i, r)
+  Then comps.t = i.t
+  And comps.object = i.object
+  And comps.point = point(0, 0, -1)
+  And comps.eyev = vector(0, 0, -1)
+  And comps.normalv = vector(0, 0, -1)
