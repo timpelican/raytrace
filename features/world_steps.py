@@ -92,3 +92,29 @@ def _set_light_by_name(self, name1, name2):
     w = getattr(world, name1)
     light = getattr(world, name2)
     w.lights = [light]
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- colour_at\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)')
+def _get_colour_at(self, name1, name2, name3):
+    w = getattr(world, name2)
+    r = getattr(world, name3)
+    setattr(world, name1, w.colour_at(r))
+
+
+@step(r'colour ([A-Za-z][A-Za-z0-9_]*)\s*=\s*([A-Za-z][A-Za-z0-9_]*)'
+      r'\.material\.colour')
+def _check_material_colour(self, name1, name2):
+    test_value = getattr(world, name2).material.colour
+    print getattr(world, name2)
+    value = getattr(world, name1)
+    print("\nExpected:")
+    print(test_value)
+    print("\nGot:")
+    print(value)
+    assert value == test_value
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.material\.ambient <- ([-+]?\d*\.?\d+)')
+def _set_material_ambient(self, name, ambient):
+    getattr(world, name).material.ambient = float(ambient)

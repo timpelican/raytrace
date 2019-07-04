@@ -26,6 +26,15 @@ class World(object):
                                                comp.normalv)
         return c
 
+    def colour_at(self, ray):
+        i = self.intersections(ray)
+        hit = i.hit()
+        if hit:
+            comps = hit.prepare_computations(ray)
+            return self.shade_hit(comps)
+        else:
+            return Tuple4.Colour(0, 0, 0)
+
 
 def DefaultWorld():
     w = World()

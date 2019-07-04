@@ -129,9 +129,9 @@ def _check_default_material(self, name):
     assert getattr(world, name) == test_material
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*).ambient <- ([-+]?\d*\.?\d+)')
+@step(r'[^\.]([A-Za-z][A-Za-z0-9_]*).ambient <- ([-+]?\d*\.?\d+)')
 def _set_ambient(self, name, ambient):
-    setattr(world, name, float(ambient))
+    getattr(world, name).ambient = float(ambient)
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*).material <- ([A-Za-z][A-Za-z0-9_]*)')

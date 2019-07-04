@@ -52,3 +52,25 @@ Scenario: Shading an intersection from the inside
   When comps <- prepare_computations(i, r)
   And c <- shade_hit(w, comps)
   Then colour c = colour(0.90498, 0.90498, 0.90498)
+
+Scenario: The colour when a ray misses
+  Given w <- default_world()
+  And r <- ray(point(0, 0, -5), vector(0, 1, 0))
+  When c <- colour_at(w, r)
+  Then colour c = colour(0, 0, 0)
+
+Scenario: The colour when a ray hits
+  Given w <- default_world()
+  And r <- ray(point(0, 0, -5), vector(0, 0, 1))
+  When c <- colour_at(w, r)
+  Then colour c = colour(0.38066, 0.47583, 0.2855)
+
+Scenario: The colour with an intersection behind the ray
+  Given w <- default_world()
+  And outer <- the first object in w
+  And outer.material.ambient <- 1
+  And inner <- the second object in w
+  And inner.material.ambient <- 1
+  And r <- ray(point(0, 0, 0.75), vector(0, 0, -1))
+  When c <- colour_at(w, r)
+  Then colour c = inner.material.colour
