@@ -127,3 +127,35 @@ Scenario: Chained transformation methods must be applied in forward order
   Given p1 <- point(1, 0, 1)
   And p2 <- p1.rotate_x(1.5707963267948966).scale(5, 5, 5).translate(10, 5, 7)
   Then point p2 = point(15, 0, 7)
+
+Scenario: The transformation matrix for the default orientation
+  Given from <- point(0, 0, 0)
+  And to <- point(0, 0, -1)
+  And up <- vector(0, 1, 0)
+  When t <- view_transform(from, to, up)
+  Then t is the identity_matrix
+
+Scenario: A view transformation matrix looking in positive z direction
+  Given from <- point(0, 0, 0)
+  And to <- point(0, 0, 1)
+  And up <- vector(0, 1, 0)
+  When t <- view_transform(from, to, up)
+  Then t = scaling(-1, 1, -1)
+
+Scenario: The view transformation moves the world
+  Given from <- point(0, 0, 8)
+  And to <- point(0, 0, 0)
+  And up <- vector(0, 1, 0)
+  When t <- view_transform(from, to, up)
+  Then t = translation(0, 0, -8)
+
+Scenario: An arbitrary view transformation
+  Given from <- point(1, 3, 2)
+  And to <- point(4, -2, 8)
+  And up <- vector(1, 1, 0)
+  When t <- view_transform(from, to, up)
+  Then matrix t is the following 4x4 matrix:
+  | -0.50709 | 0.50709 | 0.67612  | -2.36643 |
+  | 0.76772  | 0.60609 | 0.12122  | -2.82843 |
+  | -0.35857 | 0.59761 | -0.71714 | 0.00000  |
+  | 0.00000  | 0.00000 | 0.00000  | 1.00000  |

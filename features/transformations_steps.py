@@ -1,7 +1,7 @@
 from __future__ import print_function
 from aloe import step, world
 from Transformation import Translation, Scaling, Rotation_x, Rotation_y,\
-    Rotation_z, Shearing
+    Rotation_z, Shearing, ViewTransform
 from Tuple4 import Point, Vector
 
 
@@ -92,3 +92,34 @@ def _method_chain(self, name1, name2, rads, sx, sy, sz, tx, ty, tz):
     setattr(world, name1, getattr(world, name2).rotate_x(float(rads)).
             scale(float(sx), float(sy), float(sz)).
             translate(float(tx), float(ty), float(tz)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- view_transform\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _view_transformation_by_name(self, name1, name2, name3, name4):
+    p_from = getattr(world, name2)
+    p_to = getattr(world, name3)
+    v_up = getattr(world, name4)
+    setattr(world, name1, ViewTransform(p_from, p_to, v_up))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) = scaling\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _check_scaling_by_value(self, name, x, y, z):
+    test_matrix = Scaling(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_matrix
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) = translation\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _check_translation_by_value(self, name, x, y, z):
+    test_matrix = Translation(float(x), float(y), float(z))
+    print("\nExpected:")
+    print(test_matrix)
+    print("\nGot:")
+    print(getattr(world, name))
+    assert getattr(world, name) == test_matrix

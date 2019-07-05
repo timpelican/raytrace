@@ -1,4 +1,4 @@
-from Matrix import IdentityMatrix
+from Matrix import IdentityMatrix, Matrix
 from math import sin, cos
 
 
@@ -54,3 +54,15 @@ def Shearing(xy, xz, yx, yz, zx, zy):
     m[2][0] = zx
     m[2][1] = zy
     return m
+
+
+def ViewTransform(p_from, p_to, v_up):
+    forward = (p_to - p_from).normalize()
+    left = forward.cross(v_up.normalize())
+    true_up = left.cross(forward)
+    orientation = Matrix([[left.x, left.y, left.z, 0],
+                          [true_up.x, true_up.y, true_up.z, 0],
+                          [-forward.x, -forward.y, -forward.z, 0],
+                          [0, 0, 0, 1]])
+    vt = orientation * Translation(-p_from.x, -p_from.y, -p_from.z)
+    return vt
