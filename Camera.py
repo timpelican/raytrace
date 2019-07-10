@@ -3,10 +3,12 @@ import Matrix
 import math
 import Ray
 import Tuple4
+import Canvas
 
 
 class Camera(object):
     def __init__(self, hsize, vsize, fov):
+        # TODO: fix so hsize and vsize are ints
         self.hsize = hsize
         self.vsize = vsize
         self.field_of_view = fov
@@ -38,3 +40,12 @@ class Camera(object):
         origin = self.transform.inverse() * Tuple4.Point(0, 0, 0)
         direction = (pixel - origin).normalize()
         return Ray.Ray(origin, direction)
+
+    def render_world(self, world):
+        image = Canvas.Canvas(int(self.hsize), int(self.vsize))
+        for y in range(0, int(self.vsize)):
+            for x in range(0, int(self.hsize)):
+                ray = self.ray_for_pixel(x, y)
+                colour = world.colour_at(ray)
+                image.write_pixel(x, y, colour)
+        return image

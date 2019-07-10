@@ -40,3 +40,14 @@ Scenario: Constructing a ray when the camera is transformed
   And r <- ray_for_pixel(c, 100, 50)
   Then r.origin = point(0, 2, -5)
   And r.direction = vector(0.707106781187, 0, -0.707106781187)
+
+Scenario: Rendering a world with a camera
+  Given w <- default_world()
+  And c <- camera(11, 11, 1.5707963267948966)
+  And from <- point(0, 0, -5)
+  And to <- point(0, 0, 0)
+  And up <- vector(0, 1, 0)
+  And camera c has view_transform(from, to, up)
+  When image <- render_world(c, w)
+  And test_colour <- colour(0.38066, 0.47583, 0.2855)
+  Then pixel_at(image, 5, 5) = test_colour

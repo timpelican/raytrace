@@ -2,7 +2,7 @@ from aloe import step, world
 from Camera import Camera
 from Matrix import IdentityMatrix
 from maths import equals
-from Transformation import Rotation_y, Translation
+from Transformation import Rotation_y, Translation, ViewTransform
 
 
 @step(r'(hsize|vsize) <- (\d+)')
@@ -89,3 +89,21 @@ def _ray_for_pixel(self, name1, name2, value1, value2):
 def _transform_camera(self, name, ry, tx, ty, tz):
     t = Rotation_y(float(ry)) * Translation(float(tx), float(ty), float(tz))
     getattr(world, name).transform = t
+
+
+@step(r'camera ([A-Za-z][A-Za-z0-9]*) has view_transform\('
+      r'([A-Za-z][A-Za-z0-9]*)\s*,\s*([A-Za-z][A-Za-z0-9]*)\s*,\s*'
+      r'([A-Za-z][A-Za-z0-9]*)\)')
+def _camera_view_transform(self, name1, name2, name3, name4):
+    p_from = getattr(world, name2)
+    p_to = getattr(world, name3)
+    v_up = getattr(world, name4)
+    getattr(world, name1).transform = ViewTransform(p_from, p_to, v_up)
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- render_world\(([A-Za-z][A-Za-z0-9]*)\s*,\s*'
+      r'([A-Za-z][A-Za-z0-9]*)\)')
+def _render_image(self, name1, name2, name3):
+    c = getattr(world, name2)
+    w = getattr(world, name3)
+    setattr(world, name1, c.render_world(w))
