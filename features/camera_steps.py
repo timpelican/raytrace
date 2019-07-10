@@ -2,6 +2,7 @@ from aloe import step, world
 from Camera import Camera
 from Matrix import IdentityMatrix
 from maths import equals
+from Transformation import Rotation_y, Translation
 
 
 @step(r'(hsize|vsize) <- (\d+)')
@@ -71,3 +72,20 @@ def _check_pixel_size(self, name, size):
     print("\nGot:")
     print(actual_size)
     assert equals(actual_size, test_size)
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*) <- ray_for_pixel\(([A-Za-z][A-Za-z0-9]*)\s*,\s*'
+      r'(\d+)\s*,\s*(\d+)\)')
+def _ray_for_pixel(self, name1, name2, value1, value2):
+    px = int(value1)
+    py = int(value2)
+    c = getattr(world, name2)
+    setattr(world, name1, c.ray_for_pixel(px, py))
+
+
+@step(r'camera ([A-Za-z][A-Za-z0-9]*) has transform rotation_y\('
+      r'([-+]?\d*\.?\d+)\)\s*\*\s*translation\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _transform_camera(self, name, ry, tx, ty, tz):
+    t = Rotation_y(float(ry)) * Translation(float(tx), float(ty), float(tz))
+    getattr(world, name).transform = t
