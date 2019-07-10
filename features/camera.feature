@@ -13,3 +13,11 @@ Scenario: Constructing a camera
   And c.vsize = 120
   And c.field_of_view = 1.57079632679
   And c.transform is the identity_matrix
+
+Scenario: The pixel size for a horizontal canvas
+  Given c <- camera(200, 125, 1.5707963267948966)
+  Then c.pixel_size = 0.01
+
+Scenario: The pixel size for a vertical canvas
+  Given c <- camera(125, 200, 1.5707963267948966)
+  Then c.pixel_size = 0.01

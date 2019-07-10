@@ -1,6 +1,7 @@
 from aloe import step, world
 from Camera import Camera
 from Matrix import IdentityMatrix
+from maths import equals
 
 
 @step(r'(hsize|vsize) <- (\d+)')
@@ -22,6 +23,13 @@ def _camera_by_names(self, name1, name2, name3, name4):
     setattr(world, name1, Camera(hsize, vsize, fov))
 
 
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- camera\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _camera_by_values(self, name1, hsize, vsize, fov):
+    setattr(world, name1, Camera(float(hsize), float(vsize),
+                                 float(fov)))
+
+
 @step(r'([A-Za-z][A-Za-z0-9_]*).(hsize|vsize)\s*=\s*(\d+)')
 def _check_size(self, name, attr, value):
     test_size = int(value)
@@ -41,7 +49,7 @@ def _check_fov(self, name, attr, value):
     print(test_fov)
     print("\nGot:")
     print(fov)
-    assert fov == test_fov
+    assert equals(fov, test_fov)
 
 
 @step(r'([A-Za-z][A-Za-z0-9]*).transform is the identity_matrix')
@@ -52,3 +60,14 @@ def _check_identity_matrix(self, name):
     print("\nGot:")
     print(getattr(world, name).transform)
     assert getattr(world, name).transform == id
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*)\.pixel_size\s*=\s*(\d*\.?\d+)')
+def _check_pixel_size(self, name, size):
+    test_size = float(size)
+    actual_size = getattr(world, name).pixel_size
+    print("Expected:")
+    print(test_size)
+    print("\nGot:")
+    print(actual_size)
+    assert equals(actual_size, test_size)
