@@ -4,6 +4,7 @@ import math
 import Ray
 import Tuple4
 import Canvas
+import sys
 
 
 class Camera(object):
@@ -41,11 +42,20 @@ class Camera(object):
         direction = (pixel - origin).normalize()
         return Ray.Ray(origin, direction)
 
-    def render_world(self, world):
+    # TODO: this is very tacky progress info, we need to come up with
+    # something much better.
+    def render_world(self, world, verbose=False):
         image = Canvas.Canvas(int(self.hsize), int(self.vsize))
         for y in range(0, int(self.vsize)):
             for x in range(0, int(self.hsize)):
                 ray = self.ray_for_pixel(x, y)
                 colour = world.colour_at(ray)
                 image.write_pixel(x, y, colour)
+                if verbose:
+                    sys.stdout.write(".")
+                    sys.stdout.flush()
+            if verbose:
+                sys.stdout.write(str(y))
+                sys.stdout.write("\n")
+                sys.stdout.flush()
         return image
