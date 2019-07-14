@@ -29,9 +29,9 @@ class Sphere(object):
                              Intersection(t2, self))
 
     def normal_at(self, world_p):
-        object_p = self.transform.inverse() * world_p
+        object_p = self.inverse_transform * world_p
         object_n = object_p - Tuple4.Point(0, 0, 0)
-        world_n = self.transform.inverse().transpose() * object_n
+        world_n = self.transpose_inverse_transform * object_n
         world_n.w = 0
         return world_n.normalize()
 
@@ -48,3 +48,30 @@ class Sphere(object):
             return True
         else:
             return False
+
+    # Set the inverse transform every time we update the transform.
+    # This should remove a lot of repeated calculations.
+    @property
+    def transform(self):
+        return self.__transform
+
+    @transform.setter
+    def transform(self, val):
+        self.__transform = val
+        self.__inverse_transform = self.transform.inverse()
+        self.__transpose_inverse_transform = \
+            self.__inverse_transform.transpose()
+
+    # Really want some way to block this from being set independently.
+    # More reading to do.
+    @property
+    def inverse_transform(self):
+        return self.__inverse_transform
+
+    # @inverse_transform.setter
+    # def inverse_transform(self, val):
+    #     self.__inverse_transform = val
+
+    @property
+    def transpose_inverse_transform(self):
+        return self.__transpose_inverse_transform
