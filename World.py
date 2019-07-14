@@ -23,8 +23,9 @@ class World(object):
         c = Tuple4.Colour(0, 0, 0)
         # Then add the contribution from each light source
         for l in self.lights:
+            s = self.is_shadowed(comp.point, l)
             c += comp.object.material.lighting(l, comp.point, comp.eyev,
-                                               comp.normalv)
+                                               comp.normalv, s)
         return c
 
     def colour_at(self, ray):

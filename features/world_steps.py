@@ -135,3 +135,17 @@ def _check_is_shadowed(self, name1, name2, value):
         assert shadow is True
     else:
         assert shadow is False
+
+@step(r'object ([A-Za-z][A-Za-z0-9_]*) is added to world '
+      r'([A-Za-z][A-Za-z0-9_]*)')
+def _add_object_to_world(self, name1, name2):
+    getattr(world, name2).objects.append(getattr(world, name1))
+
+
+@step(r'dump_world\(([A-Za-z][A-Za-z0-9_]*)\)')
+def _dump_world(self, name):
+    w = getattr(world, name)
+    for o in w.objects:
+        print(o)
+    for l in w.lights:
+        print(l)

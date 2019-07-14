@@ -94,3 +94,19 @@ Scenario: There is no shadow when an object is behind the point
   Given w <- default_world()
   And p <- point(-2, 2, -2)
   Then is_shadowed(w, p) is false
+
+Scenario: shade_hit() is given an intersection in shadow
+  Given w <- world()
+  And l <- point_light(point(0, 0, -10), colour(1, 1, 1))
+  And w.light <- l
+  And s1 <- sphere()
+  And object s1 is added to world w
+  And s2 <- sphere()
+  And t <- translation(0, 0, 10)
+  And set_transform(s2, t)
+  And object s2 is added to world w
+  And r <- ray(point(0, 0, 5), vector(0, 0, 1))
+  And i <- intersection(4, s2)
+  When comps <- prepare_computations(i, r)
+  And c <- shade_hit(w, comps)
+  Then colour c = colour(0.1, 0.1, 0.1)
