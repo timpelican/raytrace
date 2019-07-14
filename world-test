@@ -53,9 +53,9 @@ left.material.specular = 0.3
 world.objects += [floor, left_wall, right_wall, middle, right, left]
 world.lights.append(PointLight(Point(-10, 10, -10), Colour(1, 1, 1)))
 
-camera = Camera(320, 180, pi/3)
-camera.transform = ViewTransform(Point(0, 1.5, -5),
-                                 Point(0, 1, 0),
+camera = Camera(160, 90, pi/3)
+camera.transform = ViewTransform(Point(0, 0.5, -5),
+                                 Point(0, 0, 0),
                                  Vector(0, 1, 0))
 
 canvas = camera.render_world(world, False)
