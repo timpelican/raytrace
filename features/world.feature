@@ -74,3 +74,23 @@ Scenario: The colour with an intersection behind the ray
   And r <- ray(point(0, 0, 0.75), vector(0, 0, -1))
   When c <- colour_at(w, r)
   Then colour c = inner.material.colour
+
+Scenario: There is no shadow when nothing is collinear with point and light
+  Given w <- default_world()
+  And p <- point(0, 10, 0)
+  Then is_shadowed(w, p) is false
+
+Scenario: The shadow when an object is between the point and the light
+  Given w <- default_world()
+  And p <- point(10, -10, 10)
+  Then is_shadowed(w, p) is true
+
+Scenario: There is no shadow when an object is behind the light
+  Given w <- default_world()
+  And p <- point(-20, 20, -20)
+  Then is_shadowed(w, p) is false
+
+Scenario: There is no shadow when an object is behind the point
+  Given w <- default_world()
+  And p <- point(-2, 2, -2)
+  Then is_shadowed(w, p) is false

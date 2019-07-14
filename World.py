@@ -4,6 +4,7 @@ import Tuple4
 import Sphere
 import Transformation
 import Intersection
+import Ray
 
 
 class World(object):
@@ -34,6 +35,20 @@ class World(object):
             return self.shade_hit(comps)
         else:
             return Tuple4.Colour(0, 0, 0)
+
+    # To cope with multiple lights, we need to check if we're in the shadow of
+    # a given light
+    def is_shadowed(self, p, l):
+        v = l.position - p
+        distance = v.magnitude()
+        direction = v.normalize()
+        r = Ray.Ray(p, direction)
+        intersections = self.intersections(r)
+        h = intersections.hit()
+        if h is not None and h.t < distance:
+            return True
+        else:
+            return False
 
 
 def DefaultWorld():

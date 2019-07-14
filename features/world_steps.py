@@ -118,3 +118,20 @@ def _check_material_colour(self, name1, name2):
 @step(r'([A-Za-z][A-Za-z0-9_]*)\.material\.ambient <- ([-+]?\d*\.?\d+)')
 def _set_material_ambient(self, name, ambient):
     getattr(world, name).material.ambient = float(ambient)
+
+
+@step(r'is_shadowed\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)'
+      r' is (true|false)')
+def _check_is_shadowed(self, name1, name2, value):
+    w = getattr(world, name1)
+    # Test for the first (only) light in the default world
+    light = w.lights[0]
+    shadow = w.is_shadowed(getattr(world, name2), light)
+    print("\nExpected:")
+    print(value)
+    print("\nGot:")
+    print(shadow)
+    if value == "true":
+        assert shadow is True
+    else:
+        assert shadow is False
