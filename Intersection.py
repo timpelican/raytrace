@@ -2,6 +2,7 @@
 # and the object it intersected at that t-value
 
 import itertools
+import maths
 
 
 class Intersection(object):
@@ -30,6 +31,10 @@ class Intersection(object):
             comps.normalv = -comps.normalv
         else:
             comps.inside = False
+        # after computing and (if appropriate) negating
+        # the normal vector...
+        comps.over_point = comps.point + comps.normalv * maths.EPSILON
+
         return comps
 
 

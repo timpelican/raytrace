@@ -180,3 +180,29 @@ def _check_inside(self, name, truefalse):
     print("\nGot:")
     print(value)
     assert value == test_value
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*).over_point.([xyz])\s*<\s*([-+]?\d*\.?\d+)')
+def _over_point_lt(self, name, xyz, value):
+    test_value = float(value)
+    op = getattr(world, name).over_point
+    opxyz = getattr(op, xyz)
+    print("\nExpected:")
+    print(test_value)
+    print("\nGot:")
+    print(opxyz)
+    assert opxyz < test_value
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*).point.([xyz])\s*>\s*'
+      r'([A-Za-z][A-Za-z0-9]*).over_point.([xyz])')
+def _point_gt_over_point(self, name1, xyz1, name2, xyz2):
+    p = getattr(world, name1).point
+    value = getattr(p, xyz1)
+    op = getattr(world, name2).over_point
+    test_value = getattr(op, xyz2)
+    print("\nExpected:")
+    print(test_value)
+    print("\nGot:")
+    print(value)
+    assert value > test_value
