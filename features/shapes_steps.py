@@ -1,5 +1,5 @@
 from aloe import step, world
-from Shape import TestShape
+from Shape import Shape, TestShape
 from Tuple4 import Point, Vector
 
 
@@ -30,3 +30,9 @@ def _check_saved_ray_direction(self, name, vx, vy, vz):
     print("\nGot:")
     print(vector)
     assert vector == test_vector
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) is a shape')
+def _is_a_shape(self, name):
+    test_shape = getattr(world, name)
+    assert isinstance(test_shape, Shape)

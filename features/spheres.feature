@@ -4,6 +4,10 @@ As a programmer
 I want to work with spheres
 So I can build objects
 
+Scenario: A sphere is a shape
+  Given s <- sphere()
+  Then s is a shape
+
 Scenario: A ray intersects a sphere at two points
   Given r <- ray(point(0, 0, -5), vector(0, 0, 1))
   And s <- sphere()
@@ -49,16 +53,6 @@ Scenario: Intersect sets the object on the intersection
   Then xs.count = 2
   And xs[0].object = object s
   And xs[1].object = object s
-
-Scenario: A sphere's default transformation
-  Given s <- sphere()
-  Then s.transform equals the identity_matrix
-
-Scenario: Changing a sphere's transformation
-  Given s <- sphere()
-  And t <- translation(2, 3, 4)
-  When set_transform(s, t)
-  Then s.transform = t
 
 Scenario: Intersecting a scaled sphere with a ray
   Given r <- ray(point(0, 0, -5), vector(0, 0, 1))
@@ -118,15 +112,3 @@ Scenario: Computing the normal on a transformed sphere
   And set_transform(s, m)
   When n <- normal_at(s, point(0, 0.70711, -0.70711)) # sqrt(2)/2
   Then vector n = vector(0, 0.97014, -0.24254)
-
-Scenario: A sphere has a default material
-  Given s <- sphere()
-  When m <- s.material
-  Then material m is the default material
-
-Scenario: A sphere may be assigned a material
-  Given s <- sphere()
-  And m <- material()
-  And m.ambient <- 1
-  When s.material <- m
-  Then s.material = m
