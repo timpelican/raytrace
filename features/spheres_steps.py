@@ -7,6 +7,7 @@ from Material import Material
 import re
 import Transformation
 
+
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- sphere\(\)$')
 def _sphere(self, name):
     setattr(world, name, Sphere())
@@ -21,8 +22,8 @@ def _sphere_with_values(self, name):
     tuple3 = re.compile(r'^\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,\s*'
                         r'[-+]?\d*\.?\d+\)$')
     subattr = re.compile(r'.*\..*')
-    scaling = re.compile(r'^scaling\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,\s*'
-                        r'[-+]?\d*\.?\d+\)$')
+    scaling = re.compile(r'^scaling\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,'
+                         r'\s*[-+]?\d*\.?\d+\)$')
     for row in self.table:
         attr = str(row[0])
         obj = s

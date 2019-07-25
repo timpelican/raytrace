@@ -45,7 +45,7 @@ def _transform_ray(self, ray1, ray2, transform):
             getattr(world, ray2).transform(getattr(world, transform)))
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\.origin\s*=\s*point\(([-+]?\d*\.?\d+)'
+@step(r'ray ([A-Za-z][A-Za-z0-9_]*)\.origin\s*=\s*point\(([-+]?\d*\.?\d+)'
       r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
 def _ray_origin_equals_point(self, name, x, y, z):
     test_point = Point(float(x), float(y), float(z))
@@ -56,7 +56,7 @@ def _ray_origin_equals_point(self, name, x, y, z):
     assert getattr(world, name).origin == test_point
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\.direction\s*=\s*vector\(([-+]?\d*\.?\d+)'
+@step(r'ray ([A-Za-z][A-Za-z0-9_]*)\.direction\s*=\s*vector\(([-+]?\d*\.?\d+)'
       r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
 def _ray_direction_equals_vector(self, name, x, y, z):
     test_vector = Vector(float(x), float(y), float(z))
