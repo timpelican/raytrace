@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+from Sphere import Sphere
+from Plane import Plane
+from Transformation import Scaling, Translation, Rotation_x, Rotation_y,\
+                           ViewTransform
+from Material import Material
+from Tuple4 import Colour, Point, Vector
+from math import pi
+from Light import PointLight
+from World import World
+from Camera import Camera
+
+world = World()
+
+floor = Plane()
+floor.material = Material()
+floor.material.colour = Colour(1, 0.9, 0.9)
+floor.material.specular = 0
+
+wall = Plane()
+wall.transform = Translation(0, 0, 5) * Rotation_x(pi/2)
+wall.material = floor.material
+
+middle = Sphere()
+middle.transform = Translation(-0.5, 0.2, 0.5)
+middle.material = Material()
+middle.material.colour = Colour(0.1, 1, 0.5)
+middle.material.diffuse = 0.7
+middle.material.specular = 0.3
+
+right = Sphere()
+right.transform = Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5)
+right.material = Material()
+right.material.colour = Colour(0.5, 1, 0.1)
+right.material.diffuse = 0.7
+right.material.specular = 0.3
+
+left = Sphere()
+left.transform = Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)
+left.material = Material()
+left.material.colour = Colour(1, 0.8, 0.1)
+left.material.diffuse = 0.7
+left.material.specular = 0.3
+
+world.objects += [floor, wall, middle, right, left]
+world.lights.append(PointLight(Point(-10, 10, -10), Colour(1, 1, 1)))
+
+camera = Camera(160, 90, pi/3)
+camera.transform = ViewTransform(Point(0, 0.5, -5),
+                                 Point(0, 0, 0),
+                                 Vector(0, 1, 0))
+
+canvas = camera.render_world(world, False)
+canvas.to_ppm_file("world-test2.ppm")
