@@ -1,6 +1,6 @@
 from aloe import world, step
 from Stripe import Stripe
-from Tuple4 import Point
+from Tuple4 import Point, Colour
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\(([A-Za-z][A-Za-z0-9_]*)'
@@ -36,3 +36,14 @@ def _check_stripe_at(self, name, px, py, pz, colour):
     print("\nGot:")
     print(col)
     assert col == c
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.pattern <- stripe_pattern\(colour\('
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)'
+      r'\s*,\s*colour\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\)\)')
+def _set_material_stripe_pattern(self, name, r1, g1, b1, r2, g2, b2):
+    m = getattr(world, name)
+    c1 = Colour(float(r1), float(g1), float(b1))
+    c2 = Colour(float(r2), float(g2), float(b2))
+    m.pattern = Stripe(c1, c2)

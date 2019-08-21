@@ -30,7 +30,15 @@ def _material_member_equals_value(self, name, member, value):
     assert getattr(getattr(world, name), member) == test_value
 
 
-@step(r'When ([A-Za-z][A-Za-z0-9_]*) <- lighting\(([A-Za-z][A-Za-z0-9_]*)'
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*)\.'
+      r'(ambient|diffuse|specular|shininess)\s*<-\s*'
+      r'([-+]?\d*\.?\d+)')
+def _set_material_member_value(self, name, member, value):
+    set_value = float(value)
+    setattr(getattr(world, name), member, set_value)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- lighting\(([A-Za-z][A-Za-z0-9_]*)'
       r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
       r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
       r'([A-Za-z][A-Za-z0-9_]*)\)')

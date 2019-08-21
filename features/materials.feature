@@ -73,3 +73,19 @@ Scenario: Lighting with the surface in shadow
   And in_shadow <- true
   When result <- lighting(m, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(0.1, 0.1, 0.1)
+
+Scenario: Lighting with a pattern applied
+  Given m.pattern <- stripe_pattern(colour(1, 1, 1), colour(0, 0, 0))
+  And m.ambient <- 1
+  And m.diffuse <- 0
+  And m.specular <- 0
+  And eyev <- vector(0, 0, -1)
+  And normalv <- vector(0, 0, -1)
+  And light <- point_light(point(0, 0, -10), colour(1, 1, 1))
+  And p1 <- point(0.9, 0, 0)
+  And p2 <- point(1.1, 0, 0)
+  And in_shadow <- false
+  When c1 <- lighting(m, light, p1, eyev, normalv, in_shadow)
+  And c2 <- lighting(m, light, p2, eyev, normalv, in_shadow)
+  Then colour c1 = colour(1, 1, 1)
+  And colour c2 = colour(0, 0, 0)

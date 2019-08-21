@@ -25,8 +25,13 @@ class Material(object):
     def lighting(self, light, pos, eye, norm, shadow=False):
         black = Tuple4.Colour(0, 0, 0)
 
+        # Check if we have a pattern, otherwise use the inherent colour
+        if hasattr(self, "pattern"):
+            colour = self.pattern.stripe_at(pos)
+        else:
+            colour = self.colour
         # combine the surface color with the light's color/intensity
-        effective_colour = self.colour * light.intensity
+        effective_colour = colour * light.intensity
 
         # find the direction to the light source
         lightv = (light.position - pos).normalize()
