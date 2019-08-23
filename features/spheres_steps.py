@@ -29,7 +29,7 @@ def _sphere_with_values(self, name):
         obj = s
         print(obj, attr)
         while subattr.match(attr):
-            print attr.split('.')
+            print(attr.split('.'))
             obj = getattr(obj, attr.split('.', 2)[0])
             attr = attr.split('.', 2)[1]
             print(obj, attr)

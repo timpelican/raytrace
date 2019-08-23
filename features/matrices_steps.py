@@ -86,7 +86,7 @@ def _create_transpose_identity_matrix(self, name):
     setattr(world, name, IdentityMatrix(4))
 
 
-@step(r'([A-Za-z][A-Za-z0-9]*) is the identity_matrix')
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9]*) is the identity_matrix')
 def _check_identity_matrix(self, name):
     id = IdentityMatrix(getattr(world, name).rows)
     print("Expected:")

@@ -106,7 +106,7 @@ def _get_colour_at(self, name1, name2, name3):
       r'\.material\.colour')
 def _check_material_colour(self, name1, name2):
     test_value = getattr(world, name2).material.colour
-    print getattr(world, name2)
+    print(getattr(world, name2))
     value = getattr(world, name1)
     print("\nExpected:")
     print(test_value)
