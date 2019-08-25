@@ -40,7 +40,8 @@ class Tuple4(object):
                           self.green * m.green,
                           self.blue * m.blue)
         else:  # Throw an clearer exception?
-            raise
+            raise TupleError('Can only multiply a Tuple by a Tuple, '
+                                 'a float, or an int.')
 
     def __div__(self, d):
         return self.__truediv__(d)
@@ -143,3 +144,11 @@ def Vector(x, y, z):
 
 def Colour(r, g, b):
     return Tuple4(r, g, b, 0)
+
+
+class TupleError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
