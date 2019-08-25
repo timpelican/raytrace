@@ -69,7 +69,7 @@ def _get_stripe_at_object(self, colour, pattern, object, px, py, pz):
     setattr(world, colour, c)
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\s*=\s*colour ([A-Za-z][A-Za-z0-9_]*)')
+@step(r'colour ([A-Za-z][A-Za-z0-9_]*)\s*=\s*colour ([A-Za-z][A-Za-z0-9_]*)')
 def _check_colour_by_name(self, c1, c2):
     colour = getattr(world, c1)
     test_colour = getattr(world, c2)

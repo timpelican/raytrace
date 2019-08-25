@@ -39,14 +39,14 @@ Scenario: Stripes with an object transformation
   And set_transform(object, scaling(2, 2, 2))
   And pattern <- stripe_pattern(white, black)
   When c <- stripe_at_object(pattern, object, point(1.5, 0, 0))
-  Then c = colour white
+  Then colour c = colour white
 
 Scenario: Stripes with a pattern transformation
   Given object <- sphere()
   And pattern <- stripe_pattern(white, black)
   And set_pattern_transform(pattern, scaling(2, 2, 2))
   When c <- stripe_at_object(pattern, object, point(1.5, 0, 0))
-  Then c = colour white
+  Then colour c = colour white
 
 Scenario: Stripes with both an object and a pattern transformation
   Given object <- sphere()
@@ -54,4 +54,4 @@ Scenario: Stripes with both an object and a pattern transformation
   And pattern <- stripe_pattern(white, black)
   And set_pattern_transform(pattern, translation(0.5, 0, 0))
   When c <- stripe_at_object(pattern, object, point(2.5, 0, 0))
-  Then c = colour white
+  Then colour c = colour white
