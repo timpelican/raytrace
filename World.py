@@ -24,8 +24,8 @@ class World(object):
         # Then add the contribution from each light source
         for l in self.lights:
             s = self.is_shadowed(comp.over_point, l)
-            c += comp.object.material.lighting(l, comp.over_point, comp.eyev,
-                                               comp.normalv, s)
+            c += comp.object.material.lighting(comp.object, l, comp.over_point,
+                                               comp.eyev, comp.normalv, s)
         return c
 
     def colour_at(self, ray):

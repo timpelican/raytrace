@@ -41,7 +41,7 @@ class Tuple4(object):
                           self.blue * m.blue)
         else:  # Throw an clearer exception?
             raise TupleError('Can only multiply a Tuple by a Tuple, '
-                                 'a float, or an int.')
+                             'a float, or an int.')
 
     def __div__(self, d):
         return self.__truediv__(d)

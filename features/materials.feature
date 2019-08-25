@@ -23,7 +23,8 @@ Scenario: Lighting with the eye between the light and the surface
   And c <- colour(1, 1, 1)
   And light <- point_light(p, c)
   And in_shadow <- false
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(1.9, 1.9, 1.9)
 
 Scenario: Lighting with the eye between light and surface, eye offset 45 degrees
@@ -33,7 +34,8 @@ Scenario: Lighting with the eye between light and surface, eye offset 45 degrees
   And c <- colour(1, 1, 1)
   And light <- point_light(p, c)
   And in_shadow <- false
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(1.0, 1.0, 1.0)
 
 Scenario: Lighting with eye opposite surface, light offset 45 degrees
@@ -42,8 +44,9 @@ Scenario: Lighting with eye opposite surface, light offset 45 degrees
   And p <- point(0, 10, -10)
   And c <- colour(1, 1, 1)
   And light <- point_light(p, c)
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
   And in_shadow <- false
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(0.7364, 0.7364, 0.7364)
 
 Scenario: Lighting with eye in the path of the reflection vector
@@ -53,7 +56,8 @@ Scenario: Lighting with eye in the path of the reflection vector
   And c <- colour(1, 1, 1)
   And light <- point_light(p, c)
   And in_shadow <- false
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(1.6364, 1.6364, 1.6364)
 
 Scenario: Lighting with the light behind the surface
@@ -63,7 +67,8 @@ Scenario: Lighting with the light behind the surface
   And c <- colour(1, 1, 1)
   And light <- point_light(p, c)
   And in_shadow <- false
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(0.1, 0.1, 0.1)
 
 Scenario: Lighting with the surface in shadow
@@ -71,7 +76,8 @@ Scenario: Lighting with the surface in shadow
   And normalv <- vector(0, 0, -1)
   And light <- point_light(point(0, 0, -10), colour(1, 1, 1))
   And in_shadow <- true
-  When result <- lighting(m, light, position, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When result <- lighting(m, s, light, position, eyev, normalv, in_shadow)
   Then colour result = colour(0.1, 0.1, 0.1)
 
 Scenario: Lighting with a pattern applied
@@ -85,7 +91,8 @@ Scenario: Lighting with a pattern applied
   And p1 <- point(0.9, 0, 0)
   And p2 <- point(1.1, 0, 0)
   And in_shadow <- false
-  When c1 <- lighting(m, light, p1, eyev, normalv, in_shadow)
-  And c2 <- lighting(m, light, p2, eyev, normalv, in_shadow)
+  And s <- test_shape()
+  When c1 <- lighting(m, s, light, p1, eyev, normalv, in_shadow)
+  And c2 <- lighting(m, s, light, p2, eyev, normalv, in_shadow)
   Then colour c1 = colour(1, 1, 1)
   And colour c2 = colour(0, 0, 0)

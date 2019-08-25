@@ -39,12 +39,14 @@ def _set_material_member_value(self, name, member, value):
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- lighting\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)'
       r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
       r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
       r'([A-Za-z][A-Za-z0-9_]*)\)')
-def _check_lighting(self, name, mat, light, pos, eye, norm, shadow):
+def _check_lighting(self, name, mat, obj, light, pos, eye, norm, shadow):
     setattr(world, name,
-            getattr(world, mat).lighting(getattr(world, light),
+            getattr(world, mat).lighting(getattr(world, obj),
+                                         getattr(world, light),
                                          getattr(world, pos),
                                          getattr(world, eye),
                                          getattr(world, norm),

@@ -89,6 +89,6 @@ def _set_pattern_scaling(self, name, sx, sy, sz):
 
 @step(r'set_pattern_transform\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*translation\('
       r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)\)')
-def _set_pattern_scaling(self, name, tx, ty, tz):
+def _set_pattern_translation(self, name, tx, ty, tz):
     t = Translation(float(tx), float(ty), float(tz))
     getattr(world, name).transform = t

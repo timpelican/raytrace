@@ -2,7 +2,7 @@
 from Sphere import Sphere
 from Plane import Plane
 from Transformation import Scaling, Translation, Rotation_x, Rotation_y,\
-                           ViewTransform
+                           Rotation_z, ViewTransform
 from Material import Material
 from Tuple4 import Colour, Point, Vector
 from math import pi
@@ -14,6 +14,8 @@ from Stripe import Stripe
 world = World()
 
 stripe = Stripe(Colour(1, 0, 0), Colour(0, 1, 0))
+stripe2 = Stripe(Colour(1, 1, 0), Colour(0, 0, 1))
+stripe2.transform = Scaling(0.1, 0.1, 0.1)
 
 floor = Plane()
 floor.material = Material()
@@ -22,25 +24,26 @@ floor.material.specular = 0
 floor.material.pattern = stripe
 
 wall = Plane()
-wall.transform = Translation(0, 0, 5) * Rotation_x(pi/2)
+wall.transform = Translation(1, 0, 5) * Rotation_x(pi/2)
 wall.material = floor.material
 wall.material.pattern = stripe
 
 middle = Sphere()
-middle.transform = Translation(-0.5, 1, 0.5)
+middle.transform = Translation(-0.5, 1, 0.5) * Rotation_y(pi/2)
 middle.material = Material()
 middle.material.colour = Colour(0.1, 1, 0.5)
 middle.material.diffuse = 0.7
 middle.material.specular = 0.3
-middle.material.pattern = stripe
+middle.material.pattern = stripe2
 
 right = Sphere()
-right.transform = Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5)
+right.transform = Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5) * \
+                  Rotation_z(pi/3)
 right.material = Material()
 right.material.colour = Colour(0.5, 1, 0.1)
 right.material.diffuse = 0.7
 right.material.specular = 0.3
-right.material.pattern = stripe
+right.material.pattern = stripe2
 
 left = Sphere()
 left.transform = Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)
@@ -48,7 +51,7 @@ left.material = Material()
 left.material.colour = Colour(1, 0.8, 0.1)
 left.material.diffuse = 0.7
 left.material.specular = 0.3
-left.material.pattern = stripe
+left.material.pattern = stripe2
 
 world.objects += [floor, wall, middle, right, left]
 world.lights.append(PointLight(Point(-10, 10, -10), Colour(1, 1, 1)))
