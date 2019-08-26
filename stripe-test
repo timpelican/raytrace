@@ -10,11 +10,15 @@ from Light import PointLight
 from World import World
 from Camera import Camera
 from Stripe import Stripe
+from SolidColour import SolidColour
+
 
 world = World()
 
-stripe = Stripe(Colour(1, 0, 0), Colour(0, 1, 0))
-stripe2 = Stripe(Colour(1, 1, 0), Colour(0, 0, 1))
+stripe = Stripe(SolidColour(Colour(1, 0, 0)),
+                SolidColour(Colour(0, 1, 0)))
+stripe2 = Stripe(SolidColour(Colour(1, 1, 0)),
+                 SolidColour(Colour(0, 0, 1)))
 stripe2.transform = Scaling(0.1, 0.1, 0.1)
 
 floor = Plane()
