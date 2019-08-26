@@ -3,10 +3,11 @@ from Stripe import Stripe
 from Tuple4 import Point, Colour
 from Transformation import Scaling, Translation
 from Pattern import TestPattern
+from SolidColour import SolidColour
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\(([A-Za-z][A-Za-z0-9_]*)'
-      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
 def _stripe_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
@@ -40,14 +41,23 @@ def _check_stripe_at(self, name, px, py, pz, colour):
     assert col == c
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\.pattern <- stripe_pattern\(colour\('
-      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)'
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.pattern <- stripe_pattern\(colour'
+      r'\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)'
       r'\s*,\s*colour\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
       r'([-+]?\d*\.?\d+)\)\)')
 def _set_material_stripe_pattern(self, name, r1, g1, b1, r2, g2, b2):
     m = getattr(world, name)
     c1 = Colour(float(r1), float(g1), float(b1))
     c2 = Colour(float(r2), float(g2), float(b2))
+    m.pattern = Stripe(c1, c2)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.pattern <- stripe_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _set_material_stripe_pattern_by_name(self, name, col1, col2):
+    m = getattr(world, name)
+    c1 = getattr(world, col1)
+    c2 = getattr(world, col2)
     m.pattern = Stripe(c1, c2)
 
 
@@ -105,10 +115,27 @@ def _test_pattern(self, name):
       r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
       r'point\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
       r'([-+]?\d*\.?\d+)\)\)')
-def _get_pattern_at_sahpe(self, colour, pattern, object, px, py, pz):
+def _get_pattern_at_shape(self, colour, pattern, object, px, py, pz):
     pw = Point(float(px), float(py), float(pz))
     # Point is in world space, first transform to object space
     po = getattr(world, object).inverse_transform * pw
     # Pattern will handle the transform from object to pattern space
     c = getattr(world, pattern).pattern_at(po)
     setattr(world, colour, c)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- solid_colour\(([A-Za-z][A-Za-z0-9_]*)\)')
+def _solid_colour_by_name(self, name, colour):
+    setattr(world, name, SolidColour(getattr(world, colour)))
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.(a|b)\s*=\s*solid_colour '
+      r'([A-Za-z][A-Za-z0-9_]*)')
+def _check_pattern_solid_colour(self, name, element, colour):
+    p = getattr(world, name)
+    c = getattr(world, colour)
+    print("\nExpected:")
+    print(c)
+    print("\nGot:")
+    print(getattr(p, element))
+    assert getattr(p, element) == c

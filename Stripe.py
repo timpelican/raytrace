@@ -13,6 +13,6 @@ class Stripe(Pattern):
         # Incoming point has already been transformed into pattern space
         # by the parent Pattern class
         if math.floor(point.x) % 2 == 0:
-            return self.a
+            return self.a.pattern_at(point)
         else:
-            return self.b
+            return self.b.pattern_at(point)

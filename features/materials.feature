@@ -81,7 +81,11 @@ Scenario: Lighting with the surface in shadow
   Then colour result = colour(0.1, 0.1, 0.1)
 
 Scenario: Lighting with a pattern applied
-  Given m.pattern <- stripe_pattern(colour(1, 1, 1), colour(0, 0, 0))
+  Given black <- colour(0, 0, 0)
+  And white <- colour(1, 1, 1)
+  And s_black <- solid_colour(black)
+  And s_white <- solid_colour(white)
+  And m.pattern <- stripe_pattern(s_white, s_black)
   And m.ambient <- 1
   And m.diffuse <- 0
   And m.specular <- 0
