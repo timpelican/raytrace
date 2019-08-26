@@ -32,7 +32,7 @@ def _check_stripe_at(self, name, px, py, pz, colour):
     p = Point(float(px), float(py), float(pz))
     c = getattr(world, colour)
     pat = getattr(world, name)
-    col = pat.stripe_at(p)
+    col = pat.pattern_at(p)
     print("\nExpected:")
     print(c)
     print("\nGot:")
@@ -67,7 +67,7 @@ def _get_stripe_at_object(self, colour, pattern, object, px, py, pz):
     # Point is in world space, first transform to object space
     po = getattr(world, object).inverse_transform * pw
     # Pattern will handle the transform from object to pattern space
-    c = getattr(world, pattern).stripe_at(po)
+    c = getattr(world, pattern).pattern_at(po)
     setattr(world, colour, c)
 
 

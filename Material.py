@@ -29,7 +29,7 @@ class Material(object):
         opos = object.inverse_transform * pos
         # Check if we have a pattern, otherwise use the inherent colour
         if hasattr(self, "pattern"):
-            colour = self.pattern.stripe_at(opos)
+            colour = self.pattern.pattern_at(opos)
         else:
             colour = self.colour
         # combine the surface color with the light's color/intensity
