@@ -2,6 +2,8 @@ from aloe import world, step
 from Stripe import Stripe
 from Tuple4 import Point, Colour
 from Transformation import Scaling, Translation
+from Pattern import TestPattern
+
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\(([A-Za-z][A-Za-z0-9_]*)'
       r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
@@ -92,3 +94,21 @@ def _set_pattern_scaling(self, name, sx, sy, sz):
 def _set_pattern_translation(self, name, tx, ty, tz):
     t = Translation(float(tx), float(ty), float(tz))
     getattr(world, name).transform = t
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- test_pattern\(\)')
+def _test_pattern(self, name):
+    setattr(world, name, TestPattern())
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- pattern_at_shape\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*'
+      r'point\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\)\)')
+def _get_pattern_at_sahpe(self, colour, pattern, object, px, py, pz):
+    pw = Point(float(px), float(py), float(pz))
+    # Point is in world space, first transform to object space
+    po = getattr(world, object).inverse_transform * pw
+    # Pattern will handle the transform from object to pattern space
+    c = getattr(world, pattern).pattern_at(po)
+    setattr(world, colour, c)
