@@ -4,6 +4,7 @@ from Tuple4 import Point, Colour
 from Transformation import Scaling, Translation
 from Pattern import TestPattern
 from SolidColour import SolidColour
+from Gradient import Gradient, BiGradient
 
 
 @step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\('
@@ -12,6 +13,24 @@ def _stripe_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
     p = Stripe(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- gradient_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _gradient_pattern(self, name, c1, c2):
+    col1 = getattr(world, c1)
+    col2 = getattr(world, c2)
+    p = Gradient(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- bigradient_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _bigradient_pattern(self, name, c1, c2):
+    col1 = getattr(world, c1)
+    col2 = getattr(world, c2)
+    p = BiGradient(col1, col2)
     setattr(world, name, p)
 
 
@@ -139,3 +158,34 @@ def _check_pattern_solid_colour(self, name, element, colour):
     print("\nGot:")
     print(getattr(p, element))
     assert getattr(p, element) == c
+
+
+@step(r'pattern_at\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*point\(([-+]?\d*\.?\d+)'
+      r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)\)\s*=\s*'
+      r'colour ([A-Za-z][A-Za-z0-9_]*)')
+def _check_pattern_by_name(self, pattern, px, py, pz, col):
+    pat = getattr(world, pattern)
+    pos = Point(float(px), float(py), float(pz))
+    tc = getattr(world, col)
+    c = pat.pattern(pos)
+    print("\nExpected:")
+    print(tc)
+    print("\nGot:")
+    print(c)
+    assert c == tc
+
+
+@step(r'pattern_at\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*point\(([-+]?\d*\.?\d+)'
+      r'\s*,\s*([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)\)\s*=\s*'
+      r'colour\(([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\)')
+def _check_pattern_by_colour(self, pattern, px, py, pz, r, g, b):
+    pat = getattr(world, pattern)
+    pos = Point(float(px), float(py), float(pz))
+    tc = Colour(float(r), float(g), float(b))
+    c = pat.pattern(pos)
+    print("\nExpected:")
+    print(tc)
+    print("\nGot:")
+    print(c)
+    assert c == tc
