@@ -103,3 +103,11 @@ Scenario: A bi-gradient linearly interpolates between colours and back again
   And pattern_at(pattern, point(0.25, 0, 0)) = colour(0.5, 0.5, 0.5)
   And pattern_at(pattern, point(0.5, 0, 0)) = colour black
   And pattern_at(pattern, point(0.75, 0, 0)) = colour(0.5, 0.5, 0.5)
+
+Scenario: A ring should extend in both x and z
+  Given pattern <- ring_pattern(s_white, s_black)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour white
+  And pattern_at(pattern, point(1, 0, 0)) = colour black
+  And pattern_at(pattern, point(0, 0, 1)) = colour black
+  # 0.708 = just slightly more than √2/2
+  And pattern_at(pattern, point(0.708, 0, 0.708)) = colour black

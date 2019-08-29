@@ -12,25 +12,27 @@ from Camera import Camera
 from Stripe import Stripe
 from SolidColour import SolidColour
 from Gradient import Gradient, BiGradient
+from RingPattern import RingPattern
 
 
 world = World()
 
-stripe = Stripe(SolidColour(Colour(1, 0, 0)),
-                SolidColour(Colour(0, 1, 0)))
-stripe2 = Stripe(SolidColour(Colour(1, 1, 0)),
-                 SolidColour(Colour(0, 0, 1)))
+red = SolidColour(Colour(1, 0, 0))
+green = SolidColour(Colour(0, 1, 0))
+blue = SolidColour(Colour(0, 0, 1))
+yellow = SolidColour(Colour(1, 1, 0))
+stripe = Stripe(red, green)
+stripe2 = Stripe(yellow, blue)
 stripe2.transform = Scaling(0.1, 0.1, 0.1)
-gradient = Gradient(SolidColour(Colour(1.0, 0.0, 0.0)),
-                    SolidColour(Colour(0.0, 1.0, 0.0)))
-gradient2 = BiGradient(SolidColour(Colour(1.0, 0.0, 0.0)),
-                       SolidColour(Colour(0.0, 1.0, 0.0)))
+gradient = Gradient(red, green)
+gradient2 = BiGradient(red, green)
+ring = RingPattern(red, green)
 
 floor = Plane()
 floor.material = Material()
 floor.material.colour = Colour(1, 0.9, 0.9)
 floor.material.specular = 0
-floor.material.pattern = gradient
+floor.material.pattern = ring
 
 wall = Plane()
 wall.transform = Translation(1, 0, 5) * Rotation_x(pi/2)
