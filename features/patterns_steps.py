@@ -6,6 +6,7 @@ from Pattern import TestPattern
 from SolidColour import SolidColour
 from Gradient import Gradient, BiGradient
 from RingPattern import RingPattern
+from Checkers import Checkers
 
 
 @step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\('
@@ -41,6 +42,15 @@ def _ring_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
     p = RingPattern(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- checkers_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _ring_pattern(self, name, c1, c2):
+    col1 = getattr(world, c1)
+    col2 = getattr(world, c2)
+    p = Checkers(col1, col2)
     setattr(world, name, p)
 
 

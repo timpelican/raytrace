@@ -111,3 +111,21 @@ Scenario: A ring should extend in both x and z
   And pattern_at(pattern, point(0, 0, 1)) = colour black
   # 0.708 = just slightly more than √2/2
   And pattern_at(pattern, point(0.708, 0, 0.708)) = colour black
+
+Scenario: Checkers should repeat in x
+  Given pattern <- checkers_pattern(s_white, s_black)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour white
+  And pattern_at(pattern, point(0.99, 0, 0)) = colour white
+  And pattern_at(pattern, point(1.01, 0, 0)) = colour black
+
+Scenario: Checkers should repeat in y
+  Given pattern <- checkers_pattern(s_white, s_black)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour white
+  And pattern_at(pattern, point(0, 0.99, 0)) = colour white
+  And pattern_at(pattern, point(0, 1.01, 0)) = colour black
+
+Scenario: Checkers should repeat in z
+  Given pattern <- checkers_pattern(s_white, s_black)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour white
+  And pattern_at(pattern, point(0, 0, 0.99)) = colour white
+  And pattern_at(pattern, point(0, 0, 1.01)) = colour black
