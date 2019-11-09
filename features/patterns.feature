@@ -129,3 +129,10 @@ Scenario: Checkers should repeat in z
   Then pattern_at(pattern, point(0, 0, 0)) = colour white
   And pattern_at(pattern, point(0, 0, 0.99)) = colour white
   And pattern_at(pattern, point(0, 0, 1.01)) = colour black
+
+Scenario: Radial gradient should linearly interpolate in x and z
+  Given pattern <- ring_gradient_pattern(s_white, s_black)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour white
+  And pattern_at(pattern, point(0.99999, 0, 0)) = colour black
+  And pattern_at(pattern, point(0, 0, 0.99999)) = colour black
+  And pattern_at(pattern, point(0.707106781, 0, 0.707106781)) = colour black
