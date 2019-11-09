@@ -4,7 +4,7 @@ from Tuple4 import Point, Colour
 from Transformation import Scaling, Translation
 from Pattern import TestPattern
 from SolidColour import SolidColour
-from Gradient import Gradient, BiGradient, RingGradient
+from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
 from RingPattern import RingPattern
 from Checkers import Checkers
 
@@ -60,6 +60,15 @@ def _ring_gradient_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
     p = RingGradient(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- ring_bigradient_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _ring_bigradient_pattern(self, name, c1, c2):
+    col1 = getattr(world, c1)
+    col2 = getattr(world, c2)
+    p = RingBiGradient(col1, col2)
     setattr(world, name, p)
 
 

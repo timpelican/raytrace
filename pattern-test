@@ -11,7 +11,7 @@ from World import World
 from Camera import Camera
 from Stripe import Stripe
 from SolidColour import SolidColour
-from Gradient import Gradient, BiGradient, RingGradient
+from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
 from RingPattern import RingPattern
 from Checkers import Checkers
 
@@ -31,12 +31,13 @@ ring = RingPattern(red, green)
 check = Checkers(yellow, blue)
 check.transform = Scaling(0.2, 0.2, 0.2)
 ringgrad = RingGradient(red, green)
+ringbigrad = RingBiGradient(red, green)
 
 floor = Plane()
 floor.material = Material()
 floor.material.colour = Colour(1, 0.9, 0.9)
 floor.material.specular = 0
-floor.material.pattern = ringgrad
+floor.material.pattern = ringbigrad
 
 wall = Plane()
 wall.transform = Translation(1, 0, 5) * Rotation_x(pi/2)
