@@ -143,3 +143,14 @@ Scenario: Radial bi-gradient should linearly interpolate in x and z
   And pattern_at(pattern, point(0.5, 0, 0)) = colour black
   And pattern_at(pattern, point(0, 0, 0.5)) = colour black
   And pattern_at(pattern, point(0.707106781, 0, 0.707106781)) = colour white
+
+Scenario: Nested patterns should resolve recursively
+  Given nesta <- stripe_pattern(s_white, s_black)
+  And set_pattern_transform(nesta, scaling(0.2, 0.2, 0.2))
+  And nestb <- stripe_pattern(s_black, s_white)
+  And set_pattern_transform(nestb, scaling(0.2, 0.2, 0.2))
+  And pattern <- stripe_pattern(nesta, nestb)
+  Then pattern_at(pattern, point(0.1, 0, 0)) = colour white
+  And pattern_at(pattern, point(0.3, 0, 0)) = colour black
+  And pattern_at(pattern, point(1.1, 0, 0)) = colour black
+  And pattern_at(pattern, point(1.3, 0, 0)) = colour white
