@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+from Sphere import Sphere
+from Plane import Plane
+from Transformation import Scaling, Translation, Rotation_x, Rotation_y,\
+                           Rotation_z, ViewTransform
+from Material import Material
+from Tuple4 import Colour, Point, Vector
+from math import pi
+from Light import PointLight
+from World import World
+from Camera import Camera
+from Stripe import Stripe
+from SolidColour import SolidColour
+from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
+from RingPattern import RingPattern
+from Checkers import Checkers
+
+
+world = World()
+
+red = SolidColour(Colour(1, 0, 0))
+pink = SolidColour(Colour(1, 0.5, 0.5))
+lightgrey = SolidColour(Colour(0.8, 0.8, 0.8))
+darkgrey = SolidColour(Colour(0.3, 0.3, 0.3))
+green = SolidColour(Colour(0, 1, 0))
+blue = SolidColour(Colour(0, 0, 1))
+yellow = SolidColour(Colour(1, 1, 0))
+stripe = Stripe(red, green)
+stripe2 = Stripe(yellow, blue)
+stripe2.transform = Scaling(0.1, 0.1, 0.1)
+gradient = Gradient(red, green)
+gradient2 = BiGradient(red, green)
+ring = RingPattern(red, green)
+check = Checkers(yellow, blue)
+check.transform = Scaling(0.5, 0.5, 0.5)
+ringgrad = RingGradient(red, green)
+ringbigrad = RingBiGradient(red, green)
+greystripes = Stripe(lightgrey, darkgrey)
+greystripes.transform = Rotation_y(pi/3) * Scaling(0.2, 0.2, 0.2)
+redstripes = Stripe(red, pink)
+redstripes.transform = Rotation_y(-pi/3) * Scaling(0.2, 0.2, 0.2)
+stripecheck = Checkers(greystripes, redstripes)
+
+floor = Plane()
+floor.material = Material()
+floor.material.colour = Colour(1, 0.9, 0.9)
+floor.material.specular = 0
+floor.material.pattern = stripecheck
+
+# wall = Plane()
+# wall.transform = Translation(1, 0, 5) * Rotation_x(pi/2)
+# wall.material = Material()
+# wall.material.colour = Colour(1, 0.9, 0.9)
+# wall.material.specular = 0
+# wall.material.pattern = gradient2
+#
+# middle = Sphere()
+# middle.transform = Translation(-0.5, 1, 0.5) * Rotation_y(pi/2)
+# middle.material = Material()
+# middle.material.colour = Colour(0.1, 1, 0.5)
+# middle.material.diffuse = 0.7
+# middle.material.specular = 0.3
+# middle.material.pattern = check
+#
+# right = Sphere()
+# right.transform = Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5) * \
+#                   Rotation_z(pi/3)
+# right.material = Material()
+# right.material.colour = Colour(0.5, 1, 0.1)
+# right.material.diffuse = 0.7
+# right.material.specular = 0.3
+# right.material.pattern = stripe2
+#
+# left = Sphere()
+# left.transform = Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)
+# left.material = Material()
+# left.material.colour = Colour(1, 0.8, 0.1)
+# left.material.diffuse = 0.7
+# left.material.specular = 0.3
+# left.material.pattern = stripe2
+
+# world.objects += [floor, wall, middle, right, left]
+world.objects += [floor]
+world.lights.append(PointLight(Point(-10, 10, -10), Colour(1, 1, 1)))
+
+camera = Camera(640, 360, pi/3)
+camera.transform = ViewTransform(Point(0, 2, -5),
+                                 Point(0, 0, 0),
+                                 Vector(0, 1, 1))
+
+canvas = camera.render_world(world, False)
+canvas.to_ppm_file("complex-pattern-test.ppm")
