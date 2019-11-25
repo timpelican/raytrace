@@ -154,3 +154,14 @@ Scenario: Nested patterns should resolve recursively
   And pattern_at(pattern, point(0.3, 0, 0)) = colour black
   And pattern_at(pattern, point(1.1, 0, 0)) = colour black
   And pattern_at(pattern, point(1.3, 0, 0)) = colour white
+
+Scenario: Blended patterns should average the two patterns
+  Given blenda <- stripe_pattern(s_white, s_black)
+  And set_pattern_transform(blenda, scaling(0.2, 0.2, 0.2))
+  And blendb <- stripe_pattern(s_white, s_black)
+  And pattern <- blend_pattern(blenda, blendb)
+  And grey <- colour(0.5, 0.5, 0.5)
+  Then pattern_at(pattern, point(0.1, 0, 0)) = colour white
+  And pattern_at(pattern, point(0.3, 0, 0)) = colour grey
+  And pattern_at(pattern, point(1.1, 0, 0)) = colour black
+  And pattern_at(pattern, point(1.3, 0, 0)) = colour grey

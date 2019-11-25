@@ -7,6 +7,7 @@ from SolidColour import SolidColour
 from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
 from RingPattern import RingPattern
 from Checkers import Checkers
+from Blend import Blend
 
 
 @step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\('
@@ -69,6 +70,15 @@ def _ring_bigradient_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
     p = RingBiGradient(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- blend_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _blend_pattern(self, name, c1, c2):
+    col1 = getattr(world, c1)
+    col2 = getattr(world, c2)
+    p = Blend(col1, col2)
     setattr(world, name, p)
 
 
