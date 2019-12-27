@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+from Noise import Noise
+from Canvas import Canvas
+from Tuple4 import Colour
+
+noise = Noise()
+c = Canvas(400, 400)
+for x in range(400):
+    for y in range(400):
+        n = noise.eval2d(x / 40.0, y / 40.0) * 0.5 + 0.5
+        col = Colour(n, n, n)
+        c.write_pixel(x, y, col)
+
+c.to_ppm_file("noise-test.ppm")
