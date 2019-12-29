@@ -8,6 +8,7 @@ from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
 from RingPattern import RingPattern
 from Checkers import Checkers
 from Blend import Blend
+from Perturb import Perturb
 
 
 @step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- stripe_pattern\('
@@ -79,6 +80,20 @@ def _blend_pattern(self, name, c1, c2):
     col1 = getattr(world, c1)
     col2 = getattr(world, c2)
     p = Blend(col1, col2)
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- test_pattern\(\)')
+def _test_pattern(self, name):
+    p = TestPattern()
+    setattr(world, name, p)
+
+
+@step(r'[^a-z0-9\.]([A-Za-z][A-Za-z0-9_]*) <- perturb_pattern\('
+      r'([A-Za-z][A-Za-z0-9_]*)\)')
+def _perturb_pattern(self, name, p):
+    inner_pattern = getattr(world, p)
+    p = Perturb(inner_pattern)
     setattr(world, name, p)
 
 
@@ -237,3 +252,22 @@ def _check_pattern_by_colour(self, pattern, px, py, pz, r, g, b):
     print("\nGot:")
     print(c)
     assert c == tc
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.size\s*=\s*([-+]?\d*\.?\d+)')
+def _check_perturbation_size(self, p, s):
+    pat = getattr(world, p)
+    size = float(s)
+    test_size = pat.size
+    print("\nExpected:")
+    print(size)
+    print("\nGot:")
+    print(test_size)
+    assert size == test_size
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.size\s*<-\s*([-+]?\d*\.?\d+)')
+def _set_perturbation_size(self, p, s):
+    pat = getattr(world, p)
+    size = float(s)
+    pat.size = size

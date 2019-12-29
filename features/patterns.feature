@@ -165,3 +165,23 @@ Scenario: Blended patterns should average the two patterns
   And pattern_at(pattern, point(0.3, 0, 0)) = colour grey
   And pattern_at(pattern, point(1.1, 0, 0)) = colour black
   And pattern_at(pattern, point(1.3, 0, 0)) = colour grey
+
+Scenario: Default perturbation size is 0.1
+  Given tp <- test_pattern()
+  And pattern <- perturb_pattern(tp)
+  Then pattern.size = 0.1
+
+Scenario: Perturbing a test pattern
+  Given tp <- test_pattern()
+  And pattern <- perturb_pattern(tp)
+  And testc <- colour(99.9770990676, 99.9770990676, -0.021884733123299538)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour black
+  And pattern_at(pattern, point(100, 100, 0)) = colour testc
+
+Scenario: Changing the size of perturbations
+  Given tp <- test_pattern()
+  And pattern <- perturb_pattern(tp)
+  And pattern.size <- 0.2
+  And testc <- colour(99.9541981353, 99.9541981353, -0.0437694662466)
+  Then pattern_at(pattern, point(0, 0, 0)) = colour black
+  And pattern_at(pattern, point(100, 100, 0)) = colour testc
