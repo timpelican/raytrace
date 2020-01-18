@@ -14,11 +14,12 @@ class World(object):
 
     def intersections(self, ray):
         i = Intersection.Intersections()
+
         for object in self.objects:
             i += object.intersects(ray)
         return i.sort()
 
-    def shade_hit(self, comp):
+    def shade_hit(self, comp, depth=5):
         # Start with black
         c = Tuple4.Colour(0, 0, 0)
         # Then add the contribution from each light source
@@ -26,14 +27,15 @@ class World(object):
             s = self.is_shadowed(comp.over_point, l)
             c += comp.object.material.lighting(comp.object, l, comp.over_point,
                                                comp.eyev, comp.normalv, s)
-        return c
+        r = self.reflected_colour(comp, depth)
+        return c + r
 
-    def colour_at(self, ray):
+    def colour_at(self, ray, depth=5):
         i = self.intersections(ray)
         hit = i.hit()
         if hit:
             comps = hit.prepare_computations(ray)
-            return self.shade_hit(comps)
+            return self.shade_hit(comps, depth)
         else:
             return Tuple4.Colour(0, 0, 0)
 
@@ -50,6 +52,16 @@ class World(object):
             return True
         else:
             return False
+
+    def reflected_colour(self, comps, depth=5):
+        if depth <= 0:
+            return Tuple4.Colour(0, 0, 0)
+        elif comps.object.material.reflective == 0:
+            return Tuple4.Colour(0, 0, 0)
+        else:
+            reflect_ray = Ray.Ray(comps.over_point, comps.reflectv)
+            colour = self.colour_at(reflect_ray, depth - 1)
+            return colour * comps.object.material.reflective
 
 
 def DefaultWorld():

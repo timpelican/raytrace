@@ -5,12 +5,13 @@ import math
 
 class Material(object):
     def __init__(self, colour=Tuple4.Colour(1, 1, 1), ambient=0.1, diffuse=0.9,
-                 specular=0.9, shininess=200):
+                 specular=0.9, shininess=200, reflective=0.0):
         self.colour = colour
         self.ambient = ambient
         self.diffuse = diffuse
         self.specular = specular
         self.shininess = shininess
+        self.reflective = reflective
 
     def __eq__(self, other):
         if self.colour == other.colour and \
@@ -74,9 +75,9 @@ class Material(object):
         return ambient + diffuse + specular
 
     def __str__(self):
-        return 'Material(({c}), {a}, {d}, {s1}, {s2})'.\
+        return 'Material(({c}), {a}, {d}, {s1}, {s2}, {r})'.\
             format(c=self.colour, a=self.ambient, d=self.diffuse,
-                   s1=self.specular, s2=self.shininess)
+                   s1=self.specular, s2=self.shininess, r=self.reflective)
 
     def __repr__(self):
         return self.__str__()

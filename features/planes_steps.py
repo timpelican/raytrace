@@ -1,6 +1,8 @@
 from aloe import world, step
 from Plane import Plane
-from Tuple4 import Point
+from Tuple4 import Point, Colour
+import re
+import Transformation
 
 
 @step(r'([A-Za-z][A-Za-z0-9_]*) <- plane\(\)$')
@@ -31,3 +33,44 @@ def _is_empty(self, name):
     print("\nGot:")
     print(getattr(world, name))
     assert len(getattr(world, name)) == 0
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- plane\(\) with:')
+def _plane_with_values(self, name):
+    p = Plane()
+    # TODO: feels like we should have a generic function for parsing
+    # gherkin tables
+    digit = re.compile(r'^[-+]?\d*\.?\d+$')
+    tuple3 = re.compile(r'^\([-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*,\s*'
+                        r'[-+]?\d*\.?\d+\)$')
+    subattr = re.compile(r'.*\..*')
+    translation = re.compile(r'^translation\([-+]?\d*\.?\d+\s*,\s*'
+                             r'[-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\)$')
+    for row in self.table:
+        attr = str(row[0])
+        obj = p
+        print(obj, attr)
+        while subattr.match(attr):
+            print(attr.split('.'))
+            obj = getattr(obj, attr.split('.', 2)[0])
+            attr = attr.split('.', 2)[1]
+            print(obj, attr)
+        value = row[1]
+        if digit.match(value):
+            print("DIGIT", attr, float(value))
+            setattr(obj, attr, float(value))
+        if tuple3.match(value):
+            values = value.replace("(", "").replace(")", "").split(',')
+            print("TUPLE3", attr, float(values[0]), float(values[1]),
+                  float(values[2]))
+            setattr(obj, attr, Colour(float(values[0]), float(values[1]),
+                                      float(values[2])))
+        if translation.match(value):
+            values = value.split('(')[1].replace("(", "").replace(")", "").\
+                split(',')
+            print("TRANS", attr, float(values[0]), float(values[1]),
+                  float(values[2]))
+            setattr(obj, attr, Transformation.Translation(float(values[0]),
+                                                          float(values[1]),
+                                                          float(values[2])))
+    setattr(world, name, p)

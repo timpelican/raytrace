@@ -206,3 +206,15 @@ def _point_gt_over_point(self, name1, xyz1, name2, xyz2):
     print("\nGot:")
     print(value)
     assert value > test_value
+
+
+@step(r'([A-Za-z][A-Za-z0-9]*)\.reflectv\s*=\s*vector\(([-+]?\d*\.?\d+)\s*,\s*'
+      r'([-+]?\d*\.?\d+)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _compare_reflectv_by_value(self, name, x, y, z):
+    test_value = Vector(float(x), float(y), float(z))
+    value = getattr(world, name).reflectv
+    print("\nExpected:")
+    print(test_value)
+    print("\nGot:")
+    print(value)
+    assert value == test_value

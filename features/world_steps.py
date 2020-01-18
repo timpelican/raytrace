@@ -149,3 +149,28 @@ def _dump_world(self, name):
         print(o)
     for l in w.lights:
         print(l)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- reflected_colour\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)')
+def _get_reflected_colour(self, name1, name2, name3):
+    w = getattr(world, name2)
+    c = getattr(world, name3)
+    setattr(world, name1, w.reflected_colour(c))
+
+
+@step(r'colour_at\(([A-Za-z][A-Za-z0-9_]*)\s*,\s*([A-Za-z][A-Za-z0-9_]*)\)'
+      r' should terminate successfully')
+def _colour_at_terminates(self, name1, name2):
+    w = getattr(world, name1)
+    r = getattr(world, name2)
+    assert w.colour_at(r)
+
+
+@step(r'([A-Za-z][A-Za-z0-9_]*) <- reflected_colour\(([A-Za-z][A-Za-z0-9_]*)'
+      r'\s*,\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*([-+]?\d*\.?\d+)\)')
+def _get_reflected_colour_depth(self, name1, name2, name3, d):
+    w = getattr(world, name2)
+    c = getattr(world, name3)
+    depth = int(d)
+    setattr(world, name1, w.reflected_colour(c, depth))

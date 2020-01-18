@@ -100,3 +100,7 @@ Scenario: Lighting with a pattern applied
   And c2 <- lighting(m, s, light, p2, eyev, normalv, in_shadow)
   Then colour c1 = colour(1, 1, 1)
   And colour c2 = colour(0, 0, 0)
+
+Scenario: Reflectivity for the default material
+  Given m <- material()
+  Then m.reflective = 0.0

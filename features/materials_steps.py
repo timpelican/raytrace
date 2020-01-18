@@ -19,8 +19,8 @@ def _check_colour_value(self, name, r, g, b):
     assert getattr(world, name).colour == test_colour
 
 
-@step(r'([A-Za-z][A-Za-z0-9_]*)\.(ambient|diffuse|specular|shininess)\s*=\s*'
-      r'([-+]?\d*\.?\d+)')
+@step(r'([A-Za-z][A-Za-z0-9_]*)\.(ambient|diffuse|specular|shininess|'
+      r'reflective)\s*=\s*([-+]?\d*\.?\d+)')
 def _material_member_equals_value(self, name, member, value):
     test_value = float(value)
     print("\nExpected:")

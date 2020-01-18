@@ -92,3 +92,10 @@ Scenario: The hit should offset the point
   When comps <- prepare_computations(i, r)
   Then comps.over_point.z < -0.000005
   And comps.point.z > comps.over_point.z
+
+Scenario: Precomputing the reflection vector
+  Given shape <- plane()
+  And r <- ray(point(0, 1, -1), vector(0, -0.70710678, 0.70710678))
+  And i <- intersection(1.41421356, shape)
+  When comps <- prepare_computations(i, r)
+  Then comps.reflectv = vector(0, 0.70710678, 0.70710678)

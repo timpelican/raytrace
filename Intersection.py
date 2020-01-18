@@ -34,6 +34,7 @@ class Intersection(object):
         # after computing and (if appropriate) negating
         # the normal vector...
         comps.over_point = comps.point + comps.normalv * maths.EPSILON
+        comps.reflectv = ray.direction.reflect(comps.normalv)
 
         return comps
 
