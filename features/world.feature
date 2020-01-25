@@ -147,7 +147,8 @@ Scenario: shade_hit() with a reflective material
 
 Scenario: colour_at() with mutually reflective surfaces
   Given w <- world()
-  And w.light <- point_light(point(0, 0, 0), colour(1, 1, 1))
+  And l <- point_light(point(0, 0, 0), colour(1, 1, 1))
+  And w.light <- l
   And lower <- plane() with:
     | material.reflective | 1 |
     | transform | translation(0, -1, 0) |

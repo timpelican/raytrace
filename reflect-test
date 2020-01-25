@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+from Sphere import Sphere
+from Plane import Plane
+from Transformation import Scaling, Translation, Rotation_x, Rotation_y,\
+                           Rotation_z, ViewTransform
+from Material import Material
+from Tuple4 import Colour, Point, Vector
+from math import pi
+from Light import PointLight
+from World import World
+from Camera import Camera
+from Stripe import Stripe
+from SolidColour import SolidColour
+from Gradient import Gradient, BiGradient, RingGradient, RingBiGradient
+from RingPattern import RingPattern
+from Checkers import Checkers
+
+
+world = World()
+
+darkgrey = SolidColour(Colour(0.2, 0.2, 0.2))
+lightgrey = SolidColour(Colour(0.8, 0.8, 0.8))
+red = SolidColour(Colour(1, 0, 0))
+green = SolidColour(Colour(0, 1, 0))
+blue = SolidColour(Colour(0, 0, 1))
+yellow = SolidColour(Colour(1, 1, 0))
+stripe1 = Stripe(darkgrey, lightgrey)
+stripe1.transform = Scaling(0.5, 0.5, 0.5) * Rotation_y(pi/2)
+stripe2 = Stripe(lightgrey, darkgrey)
+stripe2.transform = Scaling(0.5, 0.5, 0.5) * Rotation_y(pi/2)
+gradient = Gradient(red, green)
+gradient2 = BiGradient(red, green)
+ring = RingPattern(red, green)
+check = Checkers(darkgrey, lightgrey)
+#check.transform = Scaling(0.2, 0.2, 0.2)
+ringgrad = RingGradient(red, green)
+ringbigrad = RingBiGradient(red, green)
+
+floor = Plane()
+floor.material = Material()
+floor.material.colour = Colour(1, 0.9, 0.9)
+floor.material.specular = 0
+floor.material.reflective = 0.5
+floor.material.pattern = check
+floor.transform = Rotation_y(pi/4)
+
+wall1 = Plane()
+wall1.transform = Rotation_y(pi/4) * Translation(1, 0, 10) * Rotation_x(pi/2)
+wall1.material = Material()
+wall1.material.colour = Colour(1, 0.9, 0.9)
+wall1.material.specular = 0
+wall1.material.pattern = stripe1
+wall1.material.reflective = 0.2
+
+wall2 = Plane()
+wall2.transform = Rotation_y(-pi/4) * Translation(1, 0, 10) * Rotation_x(pi/2)
+wall2.material = Material()
+wall2.material.colour = Colour(1, 0.9, 0.9)
+wall2.material.specular = 0
+wall2.material.pattern = stripe2
+wall2.material.reflective = 0.2
+
+middle = Sphere()
+middle.transform = Translation(-0.5, 1.5, 1.5) * Scaling(1.2, 1.2, 1.2)
+middle.material = Material()
+middle.material.colour = Colour(0.8, 0.1, 0.1)
+middle.material.diffuse = 0.7
+middle.material.specular = 0.3
+
+right = Sphere()
+right.transform = Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5) * \
+                  Rotation_z(pi/3)
+right.material = Material()
+right.material.colour = Colour(0.5, 1, 0.1)
+right.material.diffuse = 0.7
+right.material.specular = 0.3
+right.material.pattern = stripe2
+
+left = Sphere()
+left.transform = Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)
+left.material = Material()
+left.material.colour = Colour(1, 0.8, 0.1)
+left.material.diffuse = 0.7
+left.material.specular = 0.3
+left.material.pattern = stripe2
+
+#world.objects += [floor, wall, middle, right, left]
+world.objects += [floor, wall1, wall2, middle]
+world.lights.append(PointLight(Point(-10, 10, -10), Colour(1, 1, 1)))
+
+camera = Camera(640, 360, pi/3)
+camera.transform = ViewTransform(Point(-1, 3, -5),
+                                 Point(0, 0, 0),
+                                 Vector(0, 1, 0))
+
+canvas = camera.render_world(world, False)
+canvas.to_ppm_file("reflect-test.ppm")
