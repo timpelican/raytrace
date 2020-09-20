@@ -1,3 +1,3 @@
-# raytrace [![Build Status](https://travis-ci.org/timpelican/raytrace.svg?branch=master)](https://travis-ci.org/timpelican/raytrace)
+# raytrace [![Build Status](https://travis-ci.com/timpelican/raytrace.svg?branch=master&status=passed)](https://travis-ci.com/github/timpelican/raytrace)
 
 PragProg "Ray Tracer Challenge" book.  Code is of interest to no-one, ever.
